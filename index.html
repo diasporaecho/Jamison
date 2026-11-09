@@ -8,7 +8,7 @@
 <meta name="description" content="Agnes Jamison's researched guide to teaching and living in Greece, Italy, Thailand, the UAE, Spain, Portugal, Mexico and Panama.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Public+Sans:ital,wght@0,400;0,600;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -33,11 +33,11 @@
       <a href="#taxes">Taxes</a>
       <a href="#timeline">Timeline</a>
       <a href="#recommendation">Recommendation</a>
+      <a href="#resources">Resources</a>
       <a href="#sources">Sources</a>
       <button class="print-toggle" id="printToggle" type="button" aria-pressed="false">Print view</button>
     </nav>
   </div>
-  <div class="airmail" aria-hidden="true"></div>
 </header>
 
 <main id="main">
@@ -46,23 +46,25 @@
 <section id="overview" class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="eyebrow">Relocation and teaching plan · 8 countries</p>
+      <p class="eyebrow">A relocation and teaching plan across eight countries</p>
       <h1>Where Agnes can teach, live and save next</h1>
-      <p class="lede">A researched comparison of Greece, Italy, Thailand, the United Arab Emirates, Spain, Portugal, Mexico and Panama for a licensed U.S. teacher, with job routes, visas, budgets and a move timeline.</p>
-      <div class="hero-meta">
-        <span class="postmark"><span class="pm-label">Researched</span><span class="pm-date" data-bind="researchDate"></span></span>
-        <span class="fx-note">Exchange rates: <span data-bind="fxDate"></span></span>
-      </div>
+      <p class="lede">Greece, Italy, Thailand, the United Arab Emirates, Spain, Portugal, Mexico and Panama, compared for a licensed U.S. teacher: job routes, visas, budgets, neighbourhoods and a step-by-step move plan.</p>
+      <nav class="hero-links" aria-label="Jump to">
+        <a href="#teaching">Teaching abroad</a><a href="#budgets">Budget calculator</a><a href="#timeline">Move checklist</a><a href="#resources">Resources</a>
+      </nav>
     </div>
-    <aside class="assume card" aria-labelledby="assumeTitle">
+    <aside class="assume" aria-labelledby="assumeTitle">
       <h2 id="assumeTitle" class="h-small">Working assumptions</h2>
-      <p class="small">Agnes has not yet answered the profile questionnaire. Everything below uses these assumptions. Nothing here invents her qualifications or income.</p>
+      <p class="small">Agnes has not yet answered the profile questionnaire, so the guide uses these assumptions. Nothing here invents her qualifications or income.</p>
       <dl class="assume-list" id="assumptions"></dl>
     </aside>
   </div>
+</section>
 
+<section class="sec leaders-sec" aria-labelledby="leadTitle">
   <div class="wrap">
-    <h2 class="h-section">Leading options</h2>
+    <p class="eyebrow">At a glance</p>
+    <h2 class="h-section" id="leadTitle">Leading options</h2>
     <div class="leaders" id="leaders"></div>
     <div class="picks" id="picks"></div>
   </div>
@@ -500,12 +502,22 @@
   </div>
 </section>
 
+<!-- ============ RESOURCES ============ -->
+<section id="resources" class="sec sec-feature">
+  <div class="wrap">
+    <p class="eyebrow">Keep using</p>
+    <h2 class="h-section">Resources for Agnes</h2>
+    <p class="prose">Sites to keep using while she researches, applies and settles in. Commercial services are listed as examples, not endorsements; compare before paying for anything.</p>
+    <div id="resourceGroups" class="res-groups"></div>
+  </div>
+</section>
+
 <!-- ============ SOURCES ============ -->
 <section id="sources" class="sec">
   <div class="wrap">
     <p class="eyebrow">Source directory</p>
     <h2 class="h-section">Sources and research dates</h2>
-    <p class="prose">All sources were accessed on or before <span data-bind="researchDate"></span>. "Official" means a government or regulator; other types are labelled. Lower-confidence sources are marked and should be confirmed.</p>
+    <p class="prose">Sources were checked in November 2026. Exchange rates: <span data-bind="fxDate"></span>. "Official" means a government or regulator; other types are labelled. Lower-confidence sources are marked and should be confirmed.</p>
     <div class="callout warn">
       <strong>Could not be verified for this guide:</strong> current open vacancies at any named school; most school careers-page URLs (marked "not verified"); salary ranges for Italy, Greece and Panama international schools; Portugal's current U.S. advisory level; Abu Dhabi rents; UAE Golden Visa eligibility for classroom teachers; Panama property-route threshold; Greece residency and citizenship timelines; dual-citizenship treatment in Spain and Panama.
     </div>
@@ -518,7 +530,7 @@
 <footer class="footer">
   <div class="wrap">
     <p>Prepared for Agnes Jamison. This guide is general information, not legal, tax or immigration advice. Confirm every requirement with the official authority or a licensed professional before acting.</p>
-    <p class="small">Contains no personal identity, financial account or health information. Budgets are scenarios.</p>
+    <p class="small">Last updated November 2026. Contains no personal identity, financial account or health information. Budgets are scenarios.</p>
   </div>
 </footer>
 

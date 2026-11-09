@@ -14,15 +14,14 @@ const FX = { USD: 1, EUR: 0.8957, THB: 33.55, AED: 3.6725, MXN: 18.70, PAB: 1 };
 
 /* ---------- Profile assumptions (she has not answered the questionnaire yet) */
 const ASSUMPTIONS = [
-  { k: "Citizenship", v: "U.S. citizen only (assumed). No EU passport or EU ancestry claim assumed.", open: true },
-  { k: "Age", v: "Not provided. Age-limited routes are flagged where an official cap was found.", open: true },
-  { k: "Qualifications", v: "Bachelor's degree plus a current U.S. state teaching license (assumed from 'currently working as a teacher'). Subjects, grade levels, endorsements, master's degree, TEFL, IB/AP and SPED experience are unknown.", open: true },
-  { k: "Experience", v: "Assumed at least 2 years, the common international-school minimum. Not confirmed.", open: true },
-  { k: "Household", v: "Moving alone, no pets, no dependents (assumed).", open: true },
-  { k: "Income", v: "Will depend mainly on a teaching salary, with some savings. No pension or passive income assumed.", open: true },
-  { k: "Housing", v: "Rent first. Buying is covered only as background.", open: true },
-  { k: "Timeline", v: "Assumed target: August 2027 school start, which means applying during the November 2026 to March 2027 hiring season.", open: true },
-  { k: "Health, medication, race and culture questions", v: "Not answered. No health details are assumed or stored on this public site.", open: true }
+  { k: "Citizenship", v: "U.S. only; no EU passport or ancestry claim." },
+  { k: "Credentials", v: "Bachelor's degree and a current U.S. state teaching license. Subjects, grades, TEFL, IB/AP and SPED unknown." },
+  { k: "Experience", v: "At least 2 years, the usual international-school minimum. Age not provided." },
+  { k: "Household", v: "Moving alone, no pets or dependents." },
+  { k: "Money", v: "Lives on a teaching salary plus some savings; no pension assumed." },
+  { k: "Housing", v: "Rents first." },
+  { k: "Timing", v: "August 2027 start, applying November 2026 to March 2027." },
+  { k: "Not yet answered", v: "Health, medication, race and culture questions. Nothing is assumed or published." }
 ];
 
 /* ---------- Ranking criteria (scores 1–5, explained on the site) */
@@ -575,4 +574,57 @@ const PLATFORMS = [
   { n: "Schrole", u: "https://www.schrole.com", d: "Applicant platform used by many accredited schools." },
   { n: "Teacher Horizons", u: "https://www.teacherhorizons.com", d: "Free for teachers; advice and listings." },
   { n: "International Schools Review", u: "https://www.internationalschoolsreview.com", d: "Paid teacher reviews of school leadership, pay and housing." }
+];
+
+/* ---------- Resources for Agnes (shown in the Resources section) */
+const RESOURCES = [
+  { group: "Living abroad and relocation", items: [
+    { n: "International Living", u: "https://internationalliving.com", d: "Country guides, cost-of-living reports and an annual retirement and relocation index. Written for Americans; read alongside official sources." },
+    { n: "Expatica", u: "https://www.expatica.com", d: "Practical how-to guides for housing, healthcare, banking and visas in Spain, Portugal, Italy and more." },
+    { n: "Expat Exchange", u: "https://www.expatexchange.com", d: "Country forums and reviews from Americans living in Mexico, Panama, Portugal and elsewhere." },
+    { n: "InterNations", u: "https://www.internations.org", d: "City-based expat community with meetups, useful for building a network before arriving." },
+    { n: "Numbeo", u: "https://www.numbeo.com/cost-of-living/", d: "Crowd-sourced rents and prices by city. Good for quick comparisons; check against local listings." }
+  ]},
+  { group: "Teaching jobs and school research", items: [
+    { n: "Search Associates", u: "https://www.searchassociates.com", d: "Leading recruiter for licensed teachers; job fairs and school profiles with typical savings." },
+    { n: "ISS (International Schools Services)", u: "https://www.iss.edu", d: "Non-profit recruiter with an educator database and recruitment events." },
+    { n: "TES Jobs", u: "https://www.tes.com/jobs", d: "Large board for British and international schools in Europe and the Gulf." },
+    { n: "Teach Away", u: "https://www.teachaway.com", d: "Free listings, especially the UAE, Asia and Latin America." },
+    { n: "Schrole", u: "https://www.schrole.com", d: "Application platform used by many accredited schools." },
+    { n: "TIE Online", u: "https://www.tieonline.com", d: "The International Educator: news and job listings for international schools." },
+    { n: "International Schools Review", u: "https://www.internationalschoolsreview.com", d: "Teacher-written reviews of leadership, pay and housing (paid)." },
+    { n: "Council of International Schools", u: "https://www.cois.org", d: "Check whether a school is CIS-accredited." },
+    { n: "IB: Find an IB World School", u: "https://www.ibo.org/programmes/find-an-ib-school/", d: "Confirm a school's IB authorisation." },
+    { n: "Go Overseas: Teach Abroad", u: "https://www.gooverseas.com/teach-abroad", d: "Programme reviews, useful for language-school and assistant routes." }
+  ]},
+  { group: "U.S. government", items: [
+    { n: "Travel advisories (State Department)", u: "https://travel.state.gov/en/international-travel/travel-advisories.html", d: "Check the current level for each country before every decision." },
+    { n: "STEP enrolment", u: "https://step.state.gov", d: "Register with the U.S. embassy so it can reach her in an emergency." },
+    { n: "U.S. embassies", u: "https://www.usembassy.gov", d: "Embassy and consulate contacts for every country on this list." },
+    { n: "FBI background check (eDO)", u: "https://www.edo.cjis.gov", d: "Order the Identity History Summary needed for most work visas." },
+    { n: "IRS: U.S. citizens abroad", u: "https://www.irs.gov/individuals/international-taxpayers", d: "Filing rules, Foreign Earned Income Exclusion and Foreign Tax Credit." },
+    { n: "Social Security: international", u: "https://www.ssa.gov/international/", d: "Totalization agreements and receiving benefits abroad." }
+  ]},
+  { group: "Official immigration sites by country", items: [
+    { n: "Spain: Ministry of Foreign Affairs (visas)", u: "https://www.exteriores.gob.es", d: "Consulate pages list visa document rules by U.S. region." },
+    { n: "Portugal: AIMA", u: "https://aima.gov.pt", d: "Residence permits and renewals." },
+    { n: "Italy: Visto per l'Italia", u: "https://vistoperitalia.esteri.it", d: "Official visa wizard showing which visa applies." },
+    { n: "Greece: Migration Ministry", u: "https://migration.gov.gr", d: "Residence permit categories and applications." },
+    { n: "Thailand: e-Visa", u: "https://www.thaievisa.go.th", d: "Official online visa applications, including Non-B and DTV." },
+    { n: "UAE: official government portal", u: "https://u.ae", d: "Residence visa and teacher-licensing information." },
+    { n: "Dubai KHDA / Abu Dhabi ADEK", u: "https://www.khda.gov.ae", d: "School inspection ratings in Dubai. For Abu Dhabi see adek.gov.ae." },
+    { n: "Mexico: National Migration Institute (INM)", u: "https://www.gob.mx/inm", d: "Residence cards, renewals and changes of status." },
+    { n: "Panama: National Migration Service", u: "https://www.migracion.gob.pa", d: "Residence categories and requirements." }
+  ]},
+  { group: "Money, insurance and language", items: [
+    { n: "Wise", u: "https://wise.com", d: "Low-cost currency transfers and a multi-currency account (example service)." },
+    { n: "Cigna Global", u: "https://www.cignaglobal.com", d: "International health insurance for gaps between employer plans (example)." },
+    { n: "GeoBlue", u: "https://www.geobluetravelinsurance.com", d: "U.S.-based international health plans for expats (example)." },
+    { n: "italki", u: "https://www.italki.com", d: "One-to-one online tutors in Spanish, Portuguese, Italian, Greek, Thai and Arabic." }
+  ]},
+  { group: "Communities", items: [
+    { n: "Travel Noire", u: "https://travelnoire.com", d: "Travel and expat stories from Black travellers; useful if Agnes opts in to that research." },
+    { n: "Wanderful", u: "https://www.sheswanderful.com", d: "Community and city chapters for women who travel." },
+    { n: "Dave's ESL Cafe", u: "https://www.eslcafe.com", d: "Long-running English-teaching job board and country forums." }
+  ]}
 ];

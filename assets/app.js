@@ -70,8 +70,8 @@
   ];
   $("#leaders").innerHTML = LEADERS.map((l, i) => {
     const c = byId[l.id], sc = scenario(c);
-    return `<article class="card leader"><span class="rank">Option ${i + 1} · ${c.code}</span>
-      <h3>${c.name}</h3><span class="city">${l.city}</span>
+    return `<article class="leader"><span class="rank">${String(i + 1).padStart(2, "0")}</span>
+      <h3>${c.name}</h3><span class="leader-city">${l.city}</span>
       <p>${l.why}</p><p class="muted"><strong>Trade-off:</strong> ${l.trade}</p>
       <p class="small">Sample offer leaves about <strong class="mono ${sc.save < 0 ? "neg" : "pos"}">${usd(sc.save)}</strong>/month after a comfortable budget (scenario).</p></article>`;
   }).join("");
@@ -330,6 +330,10 @@
       <dt>Comfortable (own housing)</dt><dd>${usd(t.comfortable)}</dd><dt>Scenario savings / month</dt><dd class="${sc.save < 0 ? "neg" : "pos"}">${usd(sc.save)}</dd></dl>
       <p class="small muted">${c.tagline}</p></article>`;
   }).join("");
+
+  /* ---------- resources */
+  $("#resourceGroups").innerHTML = RESOURCES.map(g => `<div class="res-group"><h3>${g.group}</h3><ul>${g.items.map(r =>
+    `<li><a href="${r.u}" target="_blank" rel="noopener">${esc(r.n)}</a><span>${esc(r.d)}</span></li>`).join("")}</ul></div>`).join("");
 
   /* ---------- sources */
   $("#sourceList").innerHTML = SRC_KEYS.map(k => `<li id="src-${k}"><a href="${SOURCES[k].u}" target="_blank" rel="noopener">${esc(SOURCES[k].t)}</a><span class="stype">${SOURCES[k].type}</span></li>`).join("");
