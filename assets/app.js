@@ -32,6 +32,7 @@
   /* ---------- binds */
   $$('[data-bind="researchDate"]').forEach(e => e.textContent = RESEARCH_DATE);
   $$('[data-bind="fxDate"]').forEach(e => e.textContent = FX_DATE);
+  $$('[data-bind="baseIncome"]').forEach(e => e.textContent = "$" + num(BASE_INCOME));
 
   /* ---------- assumptions */
   $("#assumptions").innerHTML = ASSUMPTIONS.map(a => `<div><dt>${esc(a.k)}</dt><dd>${esc(a.v)}</dd></div>`).join("");
@@ -43,6 +44,11 @@
     const exp = sum(b) - (s.housing ? b.rent : 0) - (s.insurance ? b.insurance : 0);
     return { net, exp, save: net - exp };
   }
+  function retireScenario(c, income) {
+    const net = income * (1 - c.retireTax / 100);
+    const exp = sum(c.budget);
+    return { net, exp, save: net - exp };
+  }
   function upfront(c, opts) {
     const u = c.upfront, b = c.budget;
     const housing = opts.housing, months = opts.reserve;
@@ -52,11 +58,11 @@
       ["Temporary housing (4 weeks)", housing ? 0 : u.temp],
       ["Rental deposit (2 months)", housing ? 0 : opts.rent * 2],
       ["Furnishings and setup", u.furnish],
-      ["Credentials, apostilles, background check", u.credentials],
+      ["Documents: background check, apostilles, translations", u.credentials],
       ["Visa and permit fees (yours)", u.visaFees],
       ["Shipping / extra baggage", u.shipping],
       ["Legal help", u.legal],
-      ["Living costs until first full paycheck (6 weeks)", exp * 1.5],
+      ["Living costs while settling in (6 weeks)", exp * 1.5],
       [`Emergency reserve (${months} months) + flight home`, exp * months + u.flight]
     ];
     return { rows, total: rows.reduce((a, r) => a + r[1], 0) };
@@ -64,23 +70,23 @@
 
   /* ---------- leaders and picks */
   const LEADERS = [
-    { id: "tha", city: "Bangkok", why: "Best overall fit with a teaching job. Accredited schools pay THB 80,000–150,000 a month with housing help, daily costs are low, and the advisory is Level 2.", trade: "Permanent residence is hard to get; air quality and heat are real daily costs." },
-    { id: "mex", city: "Mexico City or Monterrey", why: "Most practical long-term base. Permanent residence after 4 years, citizenship possible after about 5, and 4–5 hour flights home.", trade: "Pay is modest unless she lands an overseas-hire package; state-level safety varies." },
-    { id: "uae", city: "Abu Dhabi", why: "Strongest teaching market and savings for licensed U.S. teachers, with tax-free pay, housing, flights and insurance.", trade: "Level 3 U.S. advisory since March 2026 and no ordinary path to permanent residence. Decide only after checking the advisory." }
+    { id: "prt", city: "Porto or the Cascais coast", why: "The easiest European residence on a pension: the D7 visa asks for €920 a month. Excellent healthcare, calm streets, a gentle Atlantic climate and a path to permanent residence after 5 years.", trade: "Lisbon-area rents are high; citizenship now takes 10 years; immigration appointments can be slow." },
+    { id: "esp", city: "Valencia", why: "The richest everyday life on the list: walkable, sunny, seaside, with superb public and private healthcare and a large international community.", trade: "The Non-Lucrative Visa needs €2,400 a month and forbids any paid work, including tutoring." },
+    { id: "mex", city: "Mérida or Mexico City", why: "Closest to family, a few hours' flight from home, with permanent residence available directly to qualifying retirees and a lower cost of living.", trade: "Income tests are high for direct permanent residence; safety varies by state (Yucatán is Level 1, Mexico City Level 2)." }
   ];
   $("#leaders").innerHTML = LEADERS.map((l, i) => {
-    const c = byId[l.id], sc = scenario(c);
-    return `<article class="leader"><span class="rank">${String(i + 1).padStart(2, "0")}</span>
+    const c = byId[l.id], sc = retireScenario(c, BASE_INCOME);
+    return `<article class="leader"><span class="rank">${["I", "II", "III"][i]}</span>
       <h3>${c.name}</h3><span class="leader-city">${l.city}</span>
-      <p>${l.why}</p><p class="muted"><strong>Trade-off:</strong> ${l.trade}</p>
-      <p class="small">Sample offer leaves about <strong class="mono ${sc.save < 0 ? "neg" : "pos"}">${usd(sc.save)}</strong>/month after a comfortable budget (scenario).</p></article>`;
+      <p>${l.why}</p><p class="muted"><em>Consider:</em> ${l.trade}</p>
+      <p class="small">On $${num(BASE_INCOME)} a month, about <strong class="${sc.save < 0 ? "neg" : "pos"}">${usd(sc.save)}</strong> remains after a comfortable budget.</p></article>`;
   }).join("");
   const PICKS = [
-    ["Best overall fit", "Thailand · Bangkok", "Balance of jobs, pay, cost and safety."],
-    ["Best teaching opportunity", "UAE · Abu Dhabi", "Most active hiring of licensed U.S. teachers."],
-    ["Strongest savings", "UAE · Abu Dhabi", "Tax-free pay plus housing."],
-    ["Best lifestyle fit", "Spain · Valencia", "Walkable, mild, affordable for Europe; pay is low."],
-    ["Most practical long-term", "Mexico", "Clear PR and citizenship path near home. Portugal if on independent income."]
+    ["Best overall", "Portugal · Porto", "Low visa threshold, healthcare, safety."],
+    ["Easiest visa on a pension", "Panama", "Pensionado: $1,000 a month; U.S. dollars."],
+    ["Finest daily life", "Spain · Valencia", "Sea, gardens, food, culture."],
+    ["Income goes furthest", "Thailand · Chiang Mai", "Retirement visa from age 50."],
+    ["Closest to family", "Mexico · Mérida", "Short flights; permanent residence."]
   ];
   $("#picks").innerHTML = PICKS.map(p => `<div class="pick"><span>${p[0]}</span><strong>${p[1]}</strong><p>${p[2]}</p></div>`).join("");
 
@@ -103,23 +109,36 @@
   }
 
   /* ---------- rankings */
-  let track = store.get("track", "job");
-  const maxScore = CRITERIA.reduce((a, c) => a + 5 * c.w, 0);
+  let track = store.get("track2", "retire");
+  const maxScore = t => CRITERIA.reduce((a, c) => a + 5 * c.w[t], 0);
   function renderRank() {
     $$(".seg [data-track]").forEach(b => b.setAttribute("aria-selected", b.dataset.track === track));
     const rows = COUNTRIES.map(c => {
       const s = c.scores[track];
-      const total = CRITERIA.reduce((a, k) => a + s[k.id] * k.w, 0);
+      const total = CRITERIA.reduce((a, k) => a + s[k.id] * k.w[track], 0);
       return { c, s, total };
     }).sort((a, b) => b.total - a.total);
-    $("#rankTable").innerHTML = `<thead><tr><th>#</th><th>Country</th>${CRITERIA.map(k => `<th class="num" title="${k.label}">${k.label}${k.w !== 1 ? ` <span class="mono">×${k.w}</span>` : ""}</th>`).join("")}<th class="num">Weighted score</th></tr></thead>
+    $("#rankTable").innerHTML = `<thead><tr><th>#</th><th>Country</th>${CRITERIA.map(k => `<th class="num" title="${k.label}">${k.label}${k.w[track] !== 1 ? ` <span class="mono">×${k.w[track]}</span>` : ""}</th>`).join("")}<th class="num">Weighted score</th></tr></thead>
       <tbody>${rows.map((r, i) => `<tr data-country="${r.c.id}"><td class="mono">${i + 1}</td><td><strong>${r.c.name}</strong></td>
         ${CRITERIA.map(k => `<td class="score"><span class="dot s${r.s[k.id]}">${r.s[k.id]}</span></td>`).join("")}
-        <td class="num"><span class="total">${r.total.toFixed(1)}</span><div class="bar"><i style="width:${(r.total / maxScore * 100).toFixed(0)}%"></i></div></td></tr>`).join("")}</tbody>`;
+        <td class="num"><span class="total">${r.total.toFixed(1)}</span><div class="bar"><i style="width:${(r.total / maxScore(track) * 100).toFixed(0)}%"></i></div></td></tr>`).join("")}</tbody>`;
     applyCountryFilter();
   }
-  $$(".seg [data-track]").forEach(b => b.addEventListener("click", () => { track = b.dataset.track; store.set("track", track); renderRank(); }));
+  $$(".seg [data-track]").forEach(b => b.addEventListener("click", () => { track = b.dataset.track; store.set("track2", track); renderRank(); }));
   renderRank();
+
+  /* ---------- retirement tables */
+  $("#visaTestTable").innerHTML = `<thead><tr><th>Country</th><th>Main retirement route</th><th>Income test</th><th class="num">≈ USD / month</th><th>Placeholder income</th><th>Paid work allowed?</th></tr></thead><tbody>` +
+    COUNTRIES.map(c => {
+      const v = c.retireVisa, ok = BASE_INCOME >= v.minUSD * 1.2, close = BASE_INCOME >= v.minUSD;
+      const rv = c.visas.find(x => x.track === "retire");
+      return `<tr data-country="${c.id}"><td><strong>${c.short}</strong></td><td>${v.name} ${src(v.src)}</td><td>${v.test}</td><td class="num">${usd(v.minUSD)}</td>
+        <td><span class="pill ${ok ? "good" : close ? "warn" : "bad"}">${ok ? "Comfortably meets" : close ? "Meets, thin margin" : "Falls short"}</span></td><td class="small">${rv ? rv.work : "—"}</td></tr>`;
+    }).join("") + "</tbody>";
+  $("#retireTable").innerHTML = `<thead><tr><th>Country</th><th class="num">Income</th><th class="num">Est. tax</th><th class="num">After tax</th><th class="num">Comfortable budget</th><th class="num">Remaining / month</th></tr></thead><tbody>` +
+    COUNTRIES.map(c => { const r = retireScenario(c, BASE_INCOME);
+      return `<tr data-country="${c.id}"><td><strong>${c.short}</strong></td><td class="num">${usd(BASE_INCOME)}</td><td class="num">${c.retireTax}%</td><td class="num">${usd(r.net)}</td><td class="num">${usd(r.exp)}</td><td class="num ${r.save < 0 ? "neg" : "pos"}"><strong>${usd(r.save)}</strong></td></tr>`;
+    }).join("") + "</tbody>";
 
   /* ---------- teaching */
   let roles = new Set(ROLES.map(r => r.id));
@@ -228,21 +247,25 @@
     }).join("") + "</tbody>";
 
   /* calculator */
-  const ids = ["cSalary", "cTax", "cOther", "cRent", "cLiving", "cIns", "cHousing", "cInsured", "cReserve"];
+  const ids = ["cSalary", "cSS", "cTax", "cOther", "cRent", "cLiving", "cIns", "cHousing", "cInsured", "cReserve"];
   const el = Object.fromEntries(ids.map(i => [i, $("#" + i)]));
   const sel = $("#calcCountry");
   sel.innerHTML = COUNTRIES.map(c => `<option value="${c.id}">${c.name}</option>`).join("");
   function loadPreset(id) {
     const c = byId[id], b = c.budget;
-    el.cSalary.value = c.salary.gross; el.cTax.value = c.salary.tax; el.cRent.value = b.rent;
+    el.cSalary.value = BASE_INCOME; el.cSS.value = 0; el.cOther.value = 0; el.cTax.value = c.retireTax; el.cRent.value = b.rent;
     el.cIns.value = b.insurance; el.cLiving.value = sum(b) - b.rent - b.insurance;
-    el.cHousing.checked = c.salary.housing; el.cInsured.checked = c.salary.insurance;
-    $("#calcNote").textContent = "Preset: " + c.salary.label + ". " + (c.upfront.note || "");
+    el.cHousing.checked = false; el.cInsured.checked = false;
+    $("#calcNote").textContent = "Preset: placeholder income of $" + num(BASE_INCOME) + " a month and the comfortable budget for " + c.name + ". " + (c.upfront.note || "");
   }
   function calc() {
     const c = byId[sel.value];
     const v = k => Math.max(0, parseFloat(el[k].value) || 0);
-    const net = v("cSalary") * (1 - Math.min(v("cTax"), 90) / 100) + v("cOther");
+    const gross = v("cSalary") + v("cSS") + v("cOther");
+    const net = gross * (1 - Math.min(v("cTax"), 90) / 100);
+    const rv = c.retireVisa, passive = v("cSalary") + v("cSS");
+    const st = passive >= rv.minUSD * 1.2 ? ["good", "Comfortably meets"] : passive >= rv.minUSD ? ["warn", "Meets, with a thin margin"] : ["bad", "Falls short of"];
+    $("#visaCheck").innerHTML = `<span class="pill ${st[0]}">${st[1]}</span> the ${rv.name} income test (about ${usd(rv.minUSD)}/month from pension and Social Security).`;
     const rent = el.cHousing.checked ? 0 : v("cRent");
     const ins = el.cInsured.checked ? 0 : v("cIns");
     const exp = v("cLiving") + rent + ins;
@@ -257,13 +280,13 @@
     const u = upfront(c, { housing: el.cHousing.checked, reserve: months, exp, rent: v("cRent") });
     $("#upfrontTable").innerHTML = u.rows.map(r => `<tr><td>${r[0]}</td><td class="num">${usd(r[1])}</td></tr>`).join("") +
       `<tr class="tot"><td>Total to have before moving</td><td class="num">${usd(u.total)}</td></tr>`;
-    store.set("calc", { country: sel.value, vals: Object.fromEntries(ids.map(k => [k, el[k].type === "checkbox" ? el[k].checked : el[k].value])) });
+    store.set("calc2", { country: sel.value, vals: Object.fromEntries(ids.map(k => [k, el[k].type === "checkbox" ? el[k].checked : el[k].value])) });
   }
-  const saved = store.get("calc", null);
+  const saved = store.get("calc2", null);
   if (saved && byId[saved.country]) {
     sel.value = saved.country; loadPreset(saved.country);
     ids.forEach(k => { if (saved.vals && k in saved.vals) { if (el[k].type === "checkbox") el[k].checked = !!saved.vals[k]; else el[k].value = saved.vals[k]; } });
-  } else { sel.value = "tha"; loadPreset("tha"); }
+  } else { sel.value = "prt"; loadPreset("prt"); }
   sel.addEventListener("change", () => { loadPreset(sel.value); calc(); });
   ids.forEach(k => el[k].addEventListener("input", calc));
   calc();
@@ -273,9 +296,9 @@
   function renderVisas() {
     $$(".seg [data-vtrack]").forEach(b => b.setAttribute("aria-selected", b.dataset.vtrack === vtrack));
     $("#visaCards").innerHTML = COUNTRIES.map(c => {
-      const list = c.visas.filter(v => vtrack === "all" || v.track === vtrack);
+      const list = c.visas.filter(v => vtrack === "all" || v.track === vtrack || (vtrack === "retire" && v.track === "indep"));
       return `<details class="cblock" data-country="${c.id}" open><summary><h3>${c.name}</h3><span class="code">${c.code}</span></summary>
-      <div class="cbody">${list.length ? list.map(v => `<div class="visa"><h4>${v.name} <span class="pill ${v.track === "job" ? "good" : "neutral"}">${v.track === "job" ? "Teaching job" : "Independent income"}</span> ${src(v.src)}</h4>
+      <div class="cbody">${list.length ? list.map(v => `<div class="visa"><h4>${v.name} <span class="pill ${v.track === "retire" ? "good" : "neutral"}">${v.track === "job" ? "Teaching job" : v.track === "retire" ? "Retirement / income" : "Remote work income"}</span> ${src(v.src)}</h4>
         <dl><dt>Eligibility</dt><dd>${v.eligibility}</dd><dt>Income or savings</dt><dd>${v.money}</dd><dt>Government fees</dt><dd>${v.fees}</dd>
         <dt>Where to apply</dt><dd>${v.where}</dd><dt>Processing</dt><dd>${v.time}</dd><dt>Duration and renewal</dt><dd>${v.duration}</dd>
         <dt>Physical presence</dt><dd>${v.presence}</dd><dt>Work, online teaching, tutoring</dt><dd>${v.work}</dd><dt>Dependents</dt><dd>${v.dependents}</dd>
@@ -318,17 +341,16 @@
 
   /* ---------- final picks */
   const FINAL = [
-    { id: "tha", city: "Bangkok", role: "International school homeroom or subject teacher" },
-    { id: "mex", city: "Mexico City (or Monterrey)", role: "Overseas-hire teacher at a U.S.-accredited school" },
-    { id: "uae", city: "Abu Dhabi", role: "International or charter school teacher (ADEK)" }
+    { id: "prt", city: "Porto, or Cascais on the Lisbon coast", role: "Optional: substitute teaching or tutoring once her D7 permit allows" },
+    { id: "esp", city: "Valencia", role: "Volunteering; paid work not allowed on the Non-Lucrative Visa" },
+    { id: "mex", city: "Mérida, or Mexico City", role: "Optional: tutoring or part-time posts as a permanent resident" }
   ];
   $("#finalPicks").innerHTML = FINAL.map((f, i) => {
-    const c = byId[f.id], t = tiers(c.budget), sc = scenario(c);
-    const up = upfront(c, { housing: c.salary.housing, reserve: 3, exp: sc.exp, rent: c.budget.rent });
-    return `<article class="card final"><span class="eyebrow">Choice ${i + 1}</span><h3>${c.name}</h3><p><strong>${f.city}</strong> · ${f.role}</p>
-      <dl><dt>Upfront funds (3-month reserve)</dt><dd>${usd(up.total)}</dd><dt>Sustainable monthly budget</dt><dd>${usd(sc.exp)}</dd>
-      <dt>Comfortable (own housing)</dt><dd>${usd(t.comfortable)}</dd><dt>Scenario savings / month</dt><dd class="${sc.save < 0 ? "neg" : "pos"}">${usd(sc.save)}</dd></dl>
-      <p class="small muted">${c.tagline}</p></article>`;
+    const c = byId[f.id], r = retireScenario(c, BASE_INCOME);
+    const up = upfront(c, { housing: false, reserve: 6, exp: r.exp, rent: c.budget.rent });
+    return `<article class="card final"><span class="eyebrow">${["First", "Second", "Third"][i]} choice</span><h3>${c.name}</h3><p><strong>${f.city}</strong></p><p class="small muted">${f.role}</p>
+      <dl><dt>Visa income test</dt><dd>${usd(c.retireVisa.minUSD)}/mo</dd><dt>Comfortable monthly budget</dt><dd>${usd(r.exp)}</dd>
+      <dt>Funds to have before moving</dt><dd>${usd(up.total)}</dd><dt>Left on $${num(BASE_INCOME)}/mo</dt><dd class="${r.save < 0 ? "neg" : "pos"}">${usd(r.save)}</dd></dl></article>`;
   }).join("");
 
   /* ---------- resources */

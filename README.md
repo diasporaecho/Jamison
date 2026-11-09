@@ -1,6 +1,6 @@
-# Agnes Jamison — Teaching Abroad Guide
+# Agnes Jamison — Life Abroad
 
-A static, mobile-friendly website comparing Greece, Italy, Thailand, the UAE, Spain, Portugal, Mexico and Panama for a licensed U.S. teacher. Research date: **November 8, 2026**.
+A static, mobile-friendly website comparing Greece, Italy, Thailand, the UAE, Spain, Portugal, Mexico and Panama for a retired U.S. teacher: retirement visas, pension and Medicare, budgets, healthcare, optional teaching routes and a move plan. Last researched November 2026.
 
 No backend, database or API key. It runs on GitHub Pages as plain HTML, CSS and JavaScript.
 
@@ -41,11 +41,12 @@ Everything numeric lives in `assets/data.js`. Edit it in GitHub's web editor (pe
 - **Exchange rates:** change `FX` (units of local currency per 1 USD) and `FX_DATE`. Free official source: the European Central Bank or Banque de France daily reference rates.
 - **Salaries:** edit the `PAY` list. Use `lo`/`hi` numbers in local currency and `per: "mo"` or `"yr"`. Add a source id in `src`.
 - **Budgets:** each country has a `budget` block (USD per month). The modest and higher-comfort tiers are calculated from it automatically.
-- **Representative offers:** each country's `salary` block feeds the scenario table, the calculator presets and the final recommendation.
+- **Retirement income:** `BASE_INCOME` (top of data.js) is the placeholder monthly income used in every retirement scenario. Replace it with Agnes's real pension plus Social Security. Each country's `retireVisa` (income test, converted to USD) and `retireTax` (rough effective tax %) feed the visa test table, the calculator and the final recommendation.
+- **Teaching offers:** each country's `salary` block feeds the full-time teaching scenario table.
 - **Upfront costs:** each country's `upfront` block feeds the "money needed before the first paycheck" table.
 - **Schools and links:** each country's `schools` list. Set `urlType` honestly (for example "Official careers page (verified)" or "Official site (not verified)") and update `opening` when you confirm a live vacancy, with the date.
 - **Visas and residency:** each country's `visas` and `residency` blocks.
-- **Rankings:** each country's `scores.job` and `scores.indep` (1–5). Criteria and weights are in `CRITERIA`.
+- **Rankings:** each country's `scores.retire` and `scores.job` (1–5). Criteria and per-track weights are in `CRITERIA`.
 - **Sources:** add to `SOURCES` with a new id (for example `s70`), then reference it in any `src: ["s70"]`. Numbering on the page updates automatically.
 - **Checklist:** edit `CHECKLIST`. Ticks are saved by item position, so reordering items can move existing ticks.
 

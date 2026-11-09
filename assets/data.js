@@ -14,27 +14,28 @@ const FX = { USD: 1, EUR: 0.8957, THB: 33.55, AED: 3.6725, MXN: 18.70, PAB: 1 };
 
 /* ---------- Profile assumptions (she has not answered the questionnaire yet) */
 const ASSUMPTIONS = [
+  { k: "Timing", v: "The move happens after Agnes retires from U.S. teaching. Her retirement date is not yet known." },
+  { k: "Income", v: "A state teacher pension, possibly Social Security, plus savings. The examples use $4,000 a month in total, which is a placeholder, not her figure." },
   { k: "Citizenship", v: "U.S. only; no EU passport or ancestry claim." },
-  { k: "Credentials", v: "Bachelor's degree and a current U.S. state teaching license. Subjects, grades, TEFL, IB/AP and SPED unknown." },
-  { k: "Experience", v: "At least 2 years, the usual international-school minimum. Age not provided." },
+  { k: "Age", v: "Not provided. Several retirement visas set minimum ages (Thailand 50, UAE 55), so this matters." },
+  { k: "Teaching", v: "Optional. She may want part-time teaching, tutoring or volunteering, which many retirement visas do not allow." },
   { k: "Household", v: "Moving alone, no pets or dependents." },
-  { k: "Money", v: "Lives on a teaching salary plus some savings; no pension assumed." },
-  { k: "Housing", v: "Rents first." },
-  { k: "Timing", v: "August 2027 start, applying November 2026 to March 2027." },
+  { k: "Housing", v: "Rents first; buying is covered for later." },
   { k: "Not yet answered", v: "Health, medication, race and culture questions. Nothing is assumed or published." }
 ];
 
 /* ---------- Ranking criteria (scores 1–5, explained on the site) */
 const CRITERIA = [
-  { id: "legal",   label: "Legal to live and teach",   w: 1.5 },
-  { id: "jobs",    label: "Jobs for a licensed U.S. teacher", w: 1.5 },
-  { id: "income",  label: "Income vs. living costs",   w: 1 },
-  { id: "savings", label: "Monthly savings potential", w: 1 },
-  { id: "safety",  label: "Healthcare and safety",     w: 1 },
-  { id: "life",    label: "Everyday lifestyle fit",    w: 1 },
-  { id: "housing", label: "Housing options",           w: 0.75 },
-  { id: "longterm",label: "Long-term residency path",  w: 1 }
+  { id: "legal",    label: "Qualifies for residence", w: { retire: 1.5, job: 1.5 } },
+  { id: "jobs",     label: "Can keep teaching", w: { retire: 0.5, job: 1.5 } },
+  { id: "income",   label: "Cost of living", w: { retire: 1, job: 1 } },
+  { id: "savings",  label: "How far income stretches", w: { retire: 1, job: 1 } },
+  { id: "safety",   label: "Healthcare and safety", w: { retire: 1.5, job: 1 } },
+  { id: "life",     label: "Everyday lifestyle", w: { retire: 1, job: 1 } },
+  { id: "housing",  label: "Housing", w: { retire: 0.75, job: 0.75 } },
+  { id: "longterm", label: "Long-term security", w: { retire: 1, job: 1 } }
 ];
+const BASE_INCOME = 4000; /* placeholder monthly retirement income (USD) used in scenarios */
 
 /* ---------- Countries */
 const COUNTRIES = [
@@ -43,9 +44,12 @@ const COUNTRIES = [
   tagline: "Highest pay and savings for licensed teachers, but a Level 3 U.S. advisory since March 2026 and no ordinary path to permanent status.",
   advisory: { level: 3, text: "Level 3, Reconsider Travel (terrorism and armed conflict). Reissued October 23, 2026.", src: ["s26"] },
   scores: {
+    retire: { legal: 2, jobs: 1, income: 2, savings: 2, safety: 2, life: 3, housing: 3, longterm: 2 },
     job:   { legal: 5, jobs: 5, income: 5, savings: 5, safety: 2, life: 3, housing: 5, longterm: 1 },
     indep: { legal: 1, jobs: 2, income: 2, savings: 2, safety: 2, life: 3, housing: 2, longterm: 1 }
   },
+  retireVisa: { name: "UAE retirement visa (55+)", minUSD: 4085, test: "AED 15,000/month income, or AED 1 million savings, or AED 1 million property", src: ["s71"] },
+  retireTax: 0,
   teaching: {
     summary: "The UAE recruits licensed U.S. K–12 teachers in large numbers. Schools sponsor the residence visa and usually provide housing (or an allowance), annual flights, medical insurance and an end-of-service payment. Salaries are tax-free locally.",
     credentials: "A bachelor's degree and a recognised teaching qualification are required by KHDA (Dubai) and ADEK (Abu Dhabi); a home-state license plus about 2 years' experience is the usual bar. All teachers need a UAE teaching license through the federal Teacher Licensing System. Degrees and certificates must be attested: verified at home, then by the UAE embassy, then by the UAE Ministry of Foreign Affairs. Licensing typically takes 6 to 12 weeks after documents are complete.",
@@ -65,8 +69,9 @@ const COUNTRIES = [
   salary: { gross: 4085, tax: 0, housing: true, insurance: true, label: "Abu Dhabi international school, AED 15,000/mo base, housing and insurance provided", src: ["s23"] },
   budget: { rent: 1700, utilities: 200, comms: 90, groceries: 450, dining: 250, transport: 120, insurance: 150, health: 30, visa: 0, leisure: 250, trips: 180 },
   budgetNote: "Rent and utility figures for Abu Dhabi are estimates, not sourced figures. Many contracts provide furnished housing or AED 50,000–100,000 a year in allowance.",
-  upfront: { flight: 1100, temp: 0, furnish: 300, credentials: 700, visaFees: 0, shipping: 400, legal: 0, note: "Schools usually pay the flight, visa and first housing; budget for attestation, which you often pay before arrival." },
+  upfront: { flight: 1100, temp: 0, furnish: 300, credentials: 300, visaFees: 0, shipping: 400, legal: 0, note: "Schools usually pay the flight, visa and first housing; budget for attestation, which you often pay before arrival." },
   visas: [
+    { name: "Retirement residence visa", track: "retire", eligibility: "Age 55 or older, or at least 15 years of work in or outside the UAE", money: "AED 15,000/mo income (about $4,085), or AED 1 million fixed deposit, or AED 1 million property, or half deposit and half property", fees: "Varies by emirate", where: "In the UAE through the emirate's residency authority", time: "Weeks", duration: "5 years, renewable", presence: "Keep residence active; long absences can cancel it", work: "Not a work visa", dependents: "Spouse and children may be sponsored", jobLoss: "—", src: ["s71"] },
     { name: "Employer-sponsored residence visa", track: "job", eligibility: "A job offer from a licensed school; the school applies.", money: "None from you", fees: "Paid by employer (confirm in contract)", where: "Entry permit issued before travel; medical, Emirates ID and visa stamping after arrival", time: "Licensing 6–12 weeks plus visa steps", duration: "Usually 2 years, renewable", presence: "Residence visas generally lapse after long absences abroad; confirm current rule", work: "Only for your sponsoring school", dependents: "Possible if salary meets the sponsor threshold", jobLoss: "Visa is cancelled; a grace period applies. Changing schools needs the new school to sponsor you and the old one to cancel.", src: ["s22"] }
   ],
   residency: { temp: "Employer-sponsored residence, renewable while employed.", pr: "No general permanent residence. Long-term 'Golden' visas exist for some categories, including some educators; eligibility for classroom teachers was not verified.", cit: "Naturalisation for foreigners is extremely limited.", dual: "Not relevant in practice.", limited: true },
@@ -90,9 +95,12 @@ const COUNTRIES = [
   tagline: "Strong international-school market, low living costs and good savings at top schools. Permanent status is hard to get.",
   advisory: { level: 2, text: "Level 2, Exercise Increased Caution (unrest risk; avoid the Cambodian border area).", src: ["s52b"] },
   scores: {
+    retire: { legal: 4, jobs: 1, income: 5, savings: 5, safety: 4, life: 4, housing: 4, longterm: 1 },
     job:   { legal: 4, jobs: 4, income: 4, savings: 4, safety: 3, life: 4, housing: 4, longterm: 2 },
     indep: { legal: 3, jobs: 3, income: 5, savings: 5, safety: 3, life: 4, housing: 4, longterm: 1 }
   },
+  retireVisa: { name: "Non-Immigrant O retirement visa (50+)", minUSD: 1937, test: "THB 65,000/month income, or THB 800,000 in a Thai bank", src: ["s70"] },
+  retireTax: 10,
   teaching: {
     summary: "Bangkok has one of Asia's largest international-school markets. Top schools want licensed teachers and pay well with housing allowances; Thai private and bilingual schools hire more widely at lower pay.",
     credentials: "You need a Non-Immigrant B visa, then a work permit tied to your employer, and for most school posts a Teachers' Council of Thailand (Khurusapha) license or a temporary waiver. Do not teach until the work permit is issued. A U.S. criminal background check is needed for the visa. As of 2026, foreign teachers complete a mandatory 7-module online training to keep teaching status.",
@@ -112,8 +120,9 @@ const COUNTRIES = [
   salary: { gross: 3279, tax: 12, housing: false, insurance: true, label: "Bangkok international school, THB 110,000/mo, insurance provided, housing allowance not assumed", src: ["s27"] },
   budget: { rent: 750, utilities: 100, comms: 35, groceries: 250, dining: 180, transport: 60, insurance: 120, health: 30, visa: 25, leisure: 150, trips: 200 },
   budgetNote: "Bangkok 1-bedroom benchmark: about THB 25,000/month. Expat areas such as Ari run $980–1,200.",
-  upfront: { flight: 1200, temp: 1200, furnish: 300, credentials: 400, visaFees: 100, shipping: 300, legal: 0, note: "Many schools reimburse flights and pay work-permit costs." },
+  upfront: { flight: 1200, temp: 1200, furnish: 300, credentials: 300, visaFees: 100, shipping: 300, legal: 0, note: "Many schools reimburse flights and pay work-permit costs." },
   visas: [
+    { name: "Non-Immigrant O (retirement)", track: "retire", eligibility: "Age 50 or older", money: "THB 800,000 in the bank, or income of THB 65,000/mo (about $1,937)", fees: "Visa fee plus yearly extension fee", where: "Thai embassy or consulate (90-day visa), then extend at immigration in Thailand", time: "Weeks", duration: "90 days, then 1-year extensions renewed annually", presence: "Report address every 90 days; re-entry permit to travel", work: "Not a work visa; do not work without a permit", dependents: "Spouse possible", jobLoss: "—", src: ["s70"] },
     { name: "Non-Immigrant B + work permit + teacher license", track: "job", eligibility: "Job offer from a registered school", money: "None from you", fees: "Work permit and visa fees usually paid by school", where: "Non-B from a Thai embassy/consulate; permit and license in Thailand", time: "School has about 90 days after entry to secure license and permit", duration: "Matches your contract; extended yearly", presence: "Re-entry permit needed before leaving", work: "Only for your employer", dependents: "Dependent visas possible", jobLoss: "Permit ends with the job; you must leave or change status. A new employer starts a new permit.", src: ["s17", "s135"] },
     { name: "Destination Thailand Visa (DTV)", track: "indep", eligibility: "Remote work for foreign employers/clients, or approved activities", money: "THB 500,000 savings (about $14,900)", fees: "THB 10,000", where: "Apply online from outside Thailand", time: "Weeks", duration: "5 years, 180 days per entry, extendable once per entry", presence: "Exit and re-enter per stay", work: "No Thai employment; remote foreign work only", dependents: "Yes", jobLoss: "—", src: ["s20"] }
   ],
@@ -139,9 +148,12 @@ const COUNTRIES = [
   tagline: "U.S.-accredited schools close to home, a clear path to permanent residence and citizenship, but modest pay unless you land a top-tier package.",
   advisory: { level: 2, text: "Level 2 nationally, with state-by-state levels. Mexico City and Nuevo León (Monterrey) Level 2; Jalisco (Guadalajara) Level 3; Yucatán (Mérida) Level 1 as of the May 29, 2026 update.", src: ["s51", "s51b"] },
   scores: {
+    retire: { legal: 3, jobs: 3, income: 4, savings: 4, safety: 3, life: 4, housing: 4, longterm: 5 },
     job:   { legal: 4, jobs: 3, income: 3, savings: 2, safety: 3, life: 4, housing: 3, longterm: 5 },
     indep: { legal: 3, jobs: 3, income: 4, savings: 4, safety: 3, life: 4, housing: 4, longterm: 5 }
   },
+  retireVisa: { name: "Temporary residence (or permanent as a retiree)", minUSD: 4400, test: "About $4,400/month for temporary residence; about $7,560/month pension or $303,880 savings for direct permanent residence (San Diego consulate, 2026)", src: ["s12", "s72"] },
+  retireTax: 10,
   teaching: {
     summary: "Mexico has some of the oldest U.S.-accredited schools abroad (ASF Mexico City, founded 1888). Top schools hire licensed Americans on 'overseas-hire' packages; many other bilingual schools pay local salaries that are hard to live on comfortably.",
     credentials: "A job offer lets the school request your work-authorised temporary residence. A U.S. license is the key credential for American schools. Degrees and background checks are typically apostilled; Spanish translations may be required.",
@@ -163,8 +175,9 @@ const COUNTRIES = [
   budgetNote: "Benito Juárez (Del Valle, Narvarte) runs about $700–950 for a 1-bedroom; Condesa $1,100–1,400 furnished.",
   upfront: { flight: 400, temp: 1300, furnish: 600, credentials: 300, visaFees: 600, shipping: 300, legal: 200, note: "Residency fees roughly doubled in 2026." },
   visas: [
+    { name: "Permanent residence as a retiree", track: "retire", eligibility: "Retired, with pension or savings meeting the consulate test", money: "About $7,560/mo pension for 6 months, or about $303,880 average savings for 12 months (San Diego consulate, 2026); varies by consulate", fees: "Consular fee plus INM card fee (doubled in 2026)", where: "Mexican consulate in the U.S., then INM within 30 days", time: "Weeks to months", duration: "Permanent; no renewals", presence: "No minimum stay", work: "Permanent residents can generally work; confirm with INM", dependents: "Family unity routes", jobLoss: "—", src: ["s72"] },
     { name: "Temporary residence with work permission (job offer)", track: "job", eligibility: "Employer registered with INM files the offer", money: "None from you", fees: "Consular fee about $56 plus card fees in Mexico", where: "Mexican consulate in the U.S., then INM within 30 days of entry", time: "Weeks to a few months", duration: "1 year, renewable up to 4 years total", presence: "Keep your card valid; long absences can complicate renewals", work: "For the authorised employer; changing employers needs an INM update", dependents: "Family-unity routes", jobLoss: "Notify INM; status may need to change", src: ["s12"] },
-    { name: "Temporary residence by economic solvency", track: "indep", eligibility: "Income or savings", money: "About $4,400/mo net income for 6 months, or about $75,000 average balance for 12 months (2026; varies by consulate)", fees: "Consular fee about $56; INM card fees roughly doubled in 2026", where: "Mexican consulate before moving", time: "Weeks", duration: "1 year, then up to 3 more", presence: "No strict minimum, but must live there for renewals", work: "Requires a separate work authorisation for Mexican employers", dependents: "Yes", jobLoss: "—", src: ["s12", "s13"] }
+    { name: "Temporary residence by economic solvency", track: "retire", eligibility: "Income or savings", money: "About $4,400/mo net income for 6 months, or about $75,000 average balance for 12 months (2026; varies by consulate)", fees: "Consular fee about $56; INM card fees roughly doubled in 2026", where: "Mexican consulate before moving", time: "Weeks", duration: "1 year, then up to 3 more", presence: "No strict minimum, but must live there for renewals", work: "Requires a separate work authorisation for Mexican employers", dependents: "Yes", jobLoss: "—", src: ["s12", "s13"] }
   ],
   residency: { temp: "Up to 4 years of temporary residence.", pr: "After 4 years of temporary residence you can apply for permanent residence without re-proving solvency.", cit: "Naturalisation is generally available after about 5 years of residence with Spanish and culture exams; confirm the current count with SRE.", dual: "Mexico allows dual citizenship; the U.S. does not require you to renounce.", limited: false },
   cities: [
@@ -187,9 +200,12 @@ const COUNTRIES = [
   tagline: "Best everyday lifestyle and long-term path, but non-EU teacher hiring is slow and pay is low. Strongest if Agnes has independent income.",
   advisory: { level: 2, text: "Level 2, Exercise Increased Caution (terrorism), as listed March 2026.", src: ["s52"] },
   scores: {
+    retire: { legal: 3, jobs: 1, income: 3, savings: 3, safety: 5, life: 5, housing: 3, longterm: 4 },
     job:   { legal: 2, jobs: 3, income: 2, savings: 1, safety: 4, life: 5, housing: 3, longterm: 4 },
     indep: { legal: 3, jobs: 3, income: 3, savings: 2, safety: 4, life: 5, housing: 3, longterm: 4 }
   },
+  retireVisa: { name: "Non-Lucrative Visa", minUSD: 2680, test: "€2,400/month (€28,800/year) in passive income such as a pension", src: ["s1"] },
+  retireTax: 15,
   teaching: {
     summary: "Spain has many British and international schools, and a government language-assistant programme open to Americans. Hiring a non-EU teacher requires the school to sponsor a work permit, which many skip in favour of EU candidates.",
     credentials: "International schools want a teaching qualification (a U.S. license qualifies for many). A work permit generally requires the employer to show it could not fill the role locally (labour-market test); top schools are more used to this. Teaching in Spanish public schools as a full teacher requires Spanish credential homologation and is not realistic short term.",
@@ -209,11 +225,11 @@ const COUNTRIES = [
   salary: { gross: 2456, tax: 22, housing: false, insurance: false, label: "Valencia international school, €2,200/mo gross", src: ["s30"] },
   budget: { rent: 1100, utilities: 130, comms: 50, groceries: 330, dining: 180, transport: 45, insurance: 90, health: 30, visa: 15, leisure: 150, trips: 150 },
   budgetNote: "Valencia 1-bedroom: city average about €1,217 (Numbeo benchmark); outer districts lower.",
-  upfront: { flight: 900, temp: 1800, furnish: 500, credentials: 400, visaFees: 200, shipping: 400, legal: 300, note: "Deposits are often 1–2 months plus agency fees." },
+  upfront: { flight: 900, temp: 1800, furnish: 500, credentials: 300, visaFees: 200, shipping: 400, legal: 300, note: "Deposits are often 1–2 months plus agency fees." },
   visas: [
     { name: "Employer work permit (cuenta ajena)", track: "job", eligibility: "Job offer; employer passes labour-market test unless exempt", money: "None", fees: "Consular and permit fees (confirm)", where: "Employer files in Spain; you collect the visa at a U.S. consulate", time: "Often 2–4+ months", duration: "1 year initially, renewable", presence: "Live in Spain", work: "For the sponsoring employer initially", dependents: "Family reunification after a qualifying period", jobLoss: "Permit can be at risk; get legal advice", src: ["s56"] },
     { name: "Auxiliar de Conversación (student-status stay)", track: "job", eligibility: "Accepted into the ministry programme", money: "Programme stipend", fees: "Consular visa fee", where: "U.S. consulate", time: "Summer before start", duration: "Nov 1–May 31", presence: "During programme", work: "Programme hours only; limited extra work", dependents: "Limited", jobLoss: "—", src: ["s3"] },
-    { name: "Non-Lucrative Visa", track: "indep", eligibility: "Passive income or savings", money: "€2,400/mo (€28,800/yr) for one person in 2026", fees: "Consular fee (varies)", where: "Spanish consulate for your U.S. state", time: "1–3 months", duration: "1 year, then renewals", presence: "Must live in Spain", work: "No work at all, including remote", dependents: "+€600/mo each", jobLoss: "—", src: ["s1"] },
+    { name: "Non-Lucrative Visa", track: "retire", eligibility: "Passive income or savings", money: "€2,400/mo (€28,800/yr) for one person in 2026", fees: "Consular fee (varies)", where: "Spanish consulate for your U.S. state", time: "1–3 months", duration: "1 year, then renewals", presence: "Must live in Spain", work: "No work at all, including remote", dependents: "+€600/mo each", jobLoss: "—", src: ["s1"] },
     { name: "Digital Nomad Visa", track: "indep", eligibility: "Remote work for non-Spanish employers/clients", money: "About €34,188/yr (200% of 2026 minimum wage)", fees: "Varies", where: "Consulate or in Spain", time: "Weeks to months", duration: "Up to 3 years, renewable", presence: "Live in Spain", work: "Remote foreign work; limited Spanish clients", dependents: "Yes", jobLoss: "Must keep qualifying income", src: ["s2"] }
   ],
   residency: { temp: "Temporary residence while your permit is valid.", pr: "Long-term residence after 5 years of legal residence. Time on student status counts only partly; confirm.", cit: "10 years of legal residence for U.S. citizens, plus language and civics tests.", dual: "Spain normally asks non-Ibero-American applicants to renounce prior nationality; how the U.S. treats this needs professional advice.", limited: false },
@@ -236,9 +252,12 @@ const COUNTRIES = [
   tagline: "Lowest-income residence route in Western Europe (D7 at €920/month), but teacher pay is low and citizenship now takes 10 years.",
   advisory: { level: null, text: "Current U.S. advisory level not verified for this guide; check travel.state.gov.", src: [] },
   scores: {
+    retire: { legal: 5, jobs: 3, income: 4, savings: 3, safety: 5, life: 5, housing: 3, longterm: 4 },
     job:   { legal: 2, jobs: 2, income: 2, savings: 1, safety: 4, life: 4, housing: 2, longterm: 3 },
     indep: { legal: 5, jobs: 3, income: 4, savings: 3, safety: 4, life: 4, housing: 3, longterm: 3 }
   },
+  retireVisa: { name: "D7 passive income visa", minUSD: 1027, test: "€920/month (100% of the 2026 minimum wage); savings of about €11,040 commonly expected", src: ["s6"] },
+  retireTax: 15,
   teaching: {
     summary: "A small international-school market around Lisbon, Cascais and Porto. Non-EU hires happen but are limited.",
     credentials: "International schools typically want a PGCE or equivalent; a U.S. license is usually accepted. Employer sponsorship needed for a work visa.",
@@ -256,10 +275,10 @@ const COUNTRIES = [
   salary: { gross: 2010, tax: 23, housing: false, insurance: false, label: "Lisbon-area international school, €1,800/mo gross", src: ["s32"] },
   budget: { rent: 1150, utilities: 120, comms: 45, groceries: 300, dining: 160, transport: 45, insurance: 80, health: 30, visa: 20, leisure: 140, trips: 150 },
   budgetNote: "Porto 1-bedroom about €1,050; Lisbon city centre €1,331 (May 2026).",
-  upfront: { flight: 900, temp: 1700, furnish: 500, credentials: 400, visaFees: 250, shipping: 400, legal: 400, note: "AIMA appointment waits reported from about 15 days rurally to about 120 days in Lisbon/Porto." },
+  upfront: { flight: 900, temp: 1700, furnish: 500, credentials: 300, visaFees: 250, shipping: 400, legal: 400, note: "AIMA appointment waits reported from about 15 days rurally to about 120 days in Lisbon/Porto." },
   visas: [
     { name: "Work visa (employer)", track: "job", eligibility: "Job contract", money: "None", fees: "Consular fees", where: "VFS/consulate in U.S.", time: "Months", duration: "Converted to residence permit by AIMA", presence: "Live in Portugal", work: "Yes", dependents: "Family reunification (generally after 2 years' residence; exceptions)", jobLoss: "Seek advice", src: ["s5"] },
-    { name: "D7 passive income visa", track: "indep", eligibility: "Regular passive income (pension, rental, investment)", money: "€920/mo (2026 minimum wage); savings of about €11,040 commonly expected", fees: "About €260 total", where: "Consulate/VFS in U.S.", time: "3–6 months", duration: "Residence permit 2 years, then 3", presence: "Limits on absences apply", work: "Confirm on your permit", dependents: "+50% spouse, +30% child", jobLoss: "—", src: ["s6"] },
+    { name: "D7 passive income visa", track: "retire", eligibility: "Regular passive income (pension, rental, investment)", money: "€920/mo (2026 minimum wage); savings of about €11,040 commonly expected", fees: "About €260 total", where: "Consulate/VFS in U.S.", time: "3–6 months", duration: "Residence permit 2 years, then 3", presence: "Limits on absences apply", work: "D7 residence permits generally allow work; confirm before taking paid teaching", dependents: "+50% spouse, +30% child", jobLoss: "—", src: ["s6"] },
     { name: "D8 digital nomad visa", track: "indep", eligibility: "Remote income from outside Portugal", money: "€3,680/mo average over 3 months + about €11,040 savings", fees: "Consular fees", where: "Consulate/VFS", time: "Weeks to months", duration: "Temporary stay up to 1 year, or residence route", presence: "Residence route requires living there", work: "Remote foreign work", dependents: "Yes", jobLoss: "Income must stay above threshold", src: ["s7"] }
   ],
   residency: { temp: "2-year then 3-year residence permits.", pr: "Permanent residence after 5 years.", cit: "Since May 19, 2026, naturalisation requires 10 years of legal residence for U.S. citizens, counted from your first residence permit, plus A2 Portuguese and civics tests.", dual: "Portugal allows dual citizenship.", limited: false },
@@ -282,9 +301,12 @@ const COUNTRIES = [
   tagline: "Uses the U.S. dollar and has a few strong American schools, but work permits are restrictive and teacher pay is modest outside top schools.",
   advisory: { level: 2, text: "Level 2, Exercise Increased Caution (listed March 2026).", src: ["s52c"] },
   scores: {
+    retire: { legal: 5, jobs: 1, income: 4, savings: 4, safety: 3, life: 3, housing: 4, longterm: 4 },
     job:   { legal: 2, jobs: 2, income: 3, savings: 2, safety: 3, life: 3, housing: 3, longterm: 3 },
     indep: { legal: 3, jobs: 2, income: 3, savings: 3, safety: 3, life: 3, housing: 3, longterm: 3 }
   },
+  retireVisa: { name: "Pensionado visa", minUSD: 1000, test: "Lifetime pension of $1,000/month", src: ["s16"] },
+  retireTax: 8,
   teaching: {
     summary: "A handful of English-medium international schools in and around Panama City and the Pacific beach communities. Many professions are reserved for Panamanians, so the school must secure a work permit.",
     credentials: "Your employer must obtain a Ministry of Labor (MITRADEL) work permit before a job-based Friendly Nations application can go ahead. Foreign degrees may need recognition by the University of Panama for some professional visas.",
@@ -302,10 +324,10 @@ const COUNTRIES = [
   salary: { gross: 2500, tax: 18, housing: false, insurance: true, label: "Panama City international school, $2,500/mo (estimate; not verified)", src: [] },
   budget: { rent: 1200, utilities: 150, comms: 60, groceries: 380, dining: 170, transport: 60, insurance: 120, health: 30, visa: 20, leisure: 130, trips: 100 },
   budgetNote: "Panama City 1-bedroom benchmark about $1,200.",
-  upfront: { flight: 450, temp: 1400, furnish: 600, credentials: 400, visaFees: 800, shipping: 300, legal: 1500, note: "Panama residency normally requires a Panamanian lawyer." },
+  upfront: { flight: 450, temp: 1400, furnish: 600, credentials: 300, visaFees: 800, shipping: 300, legal: 1500, note: "Panama residency normally requires a Panamanian lawyer." },
   visas: [
     { name: "Friendly Nations residence via job offer", track: "job", eligibility: "U.S. citizen + Panamanian employer with an approved work permit", money: "Not applicable", fees: "Government + lawyer fees", where: "In Panama through a lawyer", time: "Work permit first, then residence (months)", duration: "2-year provisional, then permanent", presence: "Enter at least every 2 years", work: "Yes, with work permit", dependents: "Yes", jobLoss: "Seek advice; work permit tied to employer", src: ["s15"] },
-    { name: "Pensionado", track: "indep", eligibility: "Lifetime pension", money: "$1,000/mo pension (lower with property)", fees: "Lawyer + government fees", where: "In Panama", time: "Months", duration: "Permanent", presence: "Minimal", work: "No work permit", dependents: "Yes", jobLoss: "—", src: ["s16"] }
+    { name: "Pensionado", track: "retire", eligibility: "Lifetime pension", money: "$1,000/mo pension (lower with property)", fees: "Lawyer + government fees", where: "In Panama", time: "Months", duration: "Permanent", presence: "Minimal", work: "No work permit", dependents: "Yes", jobLoss: "—", src: ["s16"] }
   ],
   residency: { temp: "2-year provisional residence on Friendly Nations.", pr: "Permanent residence after the provisional period.", cit: "Naturalisation after years of permanent residence; Panama has historically required renouncing prior citizenship. Get legal advice.", dual: "Uncertain in practice; professional confirmation needed.", limited: false },
   cities: [
@@ -327,9 +349,12 @@ const COUNTRIES = [
   tagline: "Rich daily life, but work visas run through an annual quota and teacher pay is low. Realistic mainly with a sponsoring international school.",
   advisory: { level: 2, text: "Level 2, Exercise Increased Caution (terrorism), as listed March 2026.", src: ["s52"] },
   scores: {
+    retire: { legal: 2, jobs: 1, income: 2, savings: 2, safety: 4, life: 4, housing: 2, longterm: 3 },
     job:   { legal: 1, jobs: 2, income: 2, savings: 1, safety: 4, life: 4, housing: 2, longterm: 3 },
     indep: { legal: 2, jobs: 1, income: 2, savings: 2, safety: 4, life: 4, housing: 2, longterm: 3 }
   },
+  retireVisa: { name: "Elective Residence Visa", minUSD: 2884, test: "More than €31,000/year in passive income such as a pension", src: ["s10"] },
+  retireTax: 18,
   teaching: {
     summary: "International schools exist in Milan, Rome and Florence, but non-EU hiring goes through the Decreto Flussi quota system (497,550 permits for 2026–2028; 164,850 for 2026) unless a highly qualified exemption applies.",
     credentials: "Employer must apply, often on set 'click days'. Many international schools prefer EU candidates. A U.S. license is respected by American schools.",
@@ -347,10 +372,10 @@ const COUNTRIES = [
   salary: { gross: 2121, tax: 25, housing: false, insurance: false, label: "Milan/Rome international school, €1,900/mo gross (estimate; not verified)", src: [] },
   budget: { rent: 1250, utilities: 160, comms: 50, groceries: 330, dining: 180, transport: 45, insurance: 90, health: 30, visa: 25, leisure: 150, trips: 150 },
   budgetNote: "Rent figure is an estimate for a 1-bedroom outside the centre of Rome or Milan.",
-  upfront: { flight: 900, temp: 1900, furnish: 500, credentials: 450, visaFees: 250, shipping: 400, legal: 400, note: "Elective Residence requires a lease or deed before you apply." },
+  upfront: { flight: 900, temp: 1900, furnish: 500, credentials: 300, visaFees: 250, shipping: 400, legal: 400, note: "Elective Residence requires a lease or deed before you apply." },
   visas: [
     { name: "Work visa (Decreto Flussi)", track: "job", eligibility: "Employer nulla osta within quota", money: "None", fees: "Varies", where: "Employer in Italy; you at consulate", time: "3–8 months", duration: "Matches contract", presence: "Live in Italy", work: "Sponsoring employer", dependents: "Family reunification later", jobLoss: "Unemployment permit possible; seek advice", src: ["s11"] },
-    { name: "Elective Residence Visa", track: "indep", eligibility: "Passive income only", money: "More than €31,000/yr passive income", fees: "Consular fee", where: "Italian consulate for your U.S. state", time: "Weeks to months", duration: "1 year, renewable", presence: "Must live in Italy", work: "No work of any kind", dependents: "Higher threshold", jobLoss: "—", src: ["s10"] }
+    { name: "Elective Residence Visa", track: "retire", eligibility: "Passive income only", money: "More than €31,000/yr passive income", fees: "Consular fee", where: "Italian consulate for your U.S. state", time: "Weeks to months", duration: "1 year, renewable", presence: "Must live in Italy", work: "No work of any kind", dependents: "Higher threshold", jobLoss: "—", src: ["s10"] }
   ],
   residency: { temp: "Permesso di soggiorno renewed with your visa basis.", pr: "EU long-term residence after 5 years.", cit: "10 years of residence plus B1 Italian.", dual: "Italy allows dual citizenship.", limited: false },
   cities: [
@@ -372,9 +397,12 @@ const COUNTRIES = [
   tagline: "Lowest U.S. advisory level and a lovely daily life, but the hardest legal teaching market on this list for an American.",
   advisory: { level: 1, text: "Level 1, Exercise Normal Precautions (listed March 2026).", src: ["s52"] },
   scores: {
+    retire: { legal: 2, jobs: 1, income: 3, savings: 3, safety: 4, life: 4, housing: 3, longterm: 3 },
     job:   { legal: 1, jobs: 1, income: 2, savings: 1, safety: 4, life: 4, housing: 3, longterm: 3 },
     indep: { legal: 1, jobs: 2, income: 2, savings: 2, safety: 4, life: 4, housing: 3, longterm: 3 }
   },
+  retireVisa: { name: "Financially Independent Person permit", minUSD: 3908, test: "€3,500/month net passive income", src: ["s8"] },
+  retireTax: 8,
   teaching: {
     summary: "Most private and public schools prefer EU citizens or people who already hold work rights. A few American schools, notably ACS Athens and Pinewood in Thessaloniki, do recruit U.S. teachers.",
     credentials: "Non-EU teachers need a type D work visa sponsored by the employer, then a residence permit. The process takes at least two months and often longer.",
@@ -391,10 +419,10 @@ const COUNTRIES = [
   salary: { gross: 1786, tax: 22, housing: false, insurance: false, label: "Athens international school, €1,600/mo gross (estimate; not verified)", src: [] },
   budget: { rent: 1000, utilities: 150, comms: 45, groceries: 320, dining: 150, transport: 35, insurance: 90, health: 30, visa: 20, leisure: 130, trips: 160 },
   budgetNote: "Central Athens averages about $1,180; northern suburbs near schools vary.",
-  upfront: { flight: 950, temp: 1600, furnish: 500, credentials: 400, visaFees: 250, shipping: 400, legal: 400, note: "" },
+  upfront: { flight: 950, temp: 1600, furnish: 500, credentials: 300, visaFees: 250, shipping: 400, legal: 400, note: "" },
   visas: [
     { name: "Employer work visa (type D)", track: "job", eligibility: "Sponsoring employer", money: "None", fees: "Varies", where: "Greek consulate, then residence permit in Greece", time: "2+ months", duration: "Matches contract", presence: "Live in Greece", work: "Sponsoring employer", dependents: "Family reunification", jobLoss: "Seek advice", src: ["s41"] },
-    { name: "Financially Independent Person (FIP)", track: "indep", eligibility: "Passive income", money: "€3,500/mo net (+20% spouse, +15% per child)", fees: "Varies", where: "Consulate, then permit", time: "Months", duration: "3 years, renewable", presence: "183 days a year reported", work: "No work in Greece", dependents: "Yes", jobLoss: "—", src: ["s8"] },
+    { name: "Financially Independent Person (FIP)", track: "retire", eligibility: "Passive income", money: "€3,500/mo net (+20% spouse, +15% per child)", fees: "Varies", where: "Consulate, then permit", time: "Months", duration: "3 years, renewable", presence: "183 days a year reported", work: "No work in Greece", dependents: "Yes", jobLoss: "—", src: ["s8"] },
     { name: "Digital Nomad Visa", track: "indep", eligibility: "Remote work outside Greece", money: "€3,500/mo after tax", fees: "Varies", where: "Consulate or in Greece", time: "Weeks to months", duration: "12 months, convertible to 2-year permit", presence: "Live in Greece", work: "Remote foreign work", dependents: "Yes", jobLoss: "—", src: ["s9"] }
   ],
   residency: { temp: "Permit renewals on your visa basis.", pr: "Long-term residence after 5 years (confirm).", cit: "About 7 years of residence plus a citizenship exam (confirm).", dual: "Greece generally allows dual citizenship (confirm).", limited: false },
@@ -444,56 +472,50 @@ const ROLES = [
 
 /* ---------- Checklist (saved in the browser) */
 const CHECKLIST = [
-  { phase: "Now: 6–12 months before (Nov 2026 – Feb 2027)", items: [
-    "Answer the profile questionnaire so rankings can be personalised",
-    "Request certified copies of degree, transcripts and teaching license",
-    "Order an FBI Identity History Summary (background check) and plan apostilles",
-    "Ask your pension administrator the questions in the Retirement section",
-    "Write an international teaching résumé (2 pages, photo optional by region)",
-    "Line up 3 current references, including your principal",
-    "Build a teaching portfolio: 2 lesson plans, assessment data, a 3-minute video lesson",
-    "Register with Search Associates, Teach Away, TES and Schrole",
-    "Attend a recruitment fair or virtual fair (January–February)",
-    "Apply to 10–15 schools across your top three countries"
+  { phase: "12–18 months before retiring", items: [
+    "Answer the profile questionnaire so the guide can be re-ranked",
+    "Ask the pension system for a written estimate of monthly pension and survivor options",
+    "Get a Social Security benefit estimate at ssa.gov",
+    "Ask whether the pension can be paid to a foreign bank or must go to a U.S. account",
+    "Ask whether retiree health coverage works outside the U.S.",
+    "Decide on a Medicare Part B strategy before age 65 (see Retirement income)",
+    "Shortlist two countries and book a scouting trip"
   ]},
-  { phase: "3–6 months before (Mar – May 2027)", items: [
-    "Compare offers with the contract checklist; get key terms in writing",
-    "Accept one offer; confirm who pays visa, flights and attestation",
-    "Start degree attestation (UAE) or document legalisation as required",
-    "Book the scouting trip if you have not yet visited",
-    "Check passport validity (at least 18 months remaining)",
-    "Arrange international health insurance for any gap period",
-    "Decide what to ship, store or sell"
+  { phase: "6–12 months before", items: [
+    "Take the scouting trip and choose a city",
+    "Order an FBI background check (allow for apostille time)",
+    "Request pension and Social Security award letters for the visa file; apostille as required",
+    "Buy international health insurance that meets the visa's rules",
+    "Book a consulate appointment (Spain, Italy and Portugal fill up months ahead)",
+    "If she wants to keep teaching, check which visa allows it before applying"
   ]},
-  { phase: "Final 30 days (July 2027)", items: [
-    "Collect your visa and check every detail",
-    "Notify your bank and set up a no-foreign-fee card plus a transfer service",
+  { phase: "Final 30 days", items: [
+    "Collect the visa and check every detail",
+    "Set up a no-foreign-fee card and a regulated transfer service",
     "Get prescriptions and a doctor's letter for 3 months of medication",
     "Scan all documents to an encrypted cloud folder",
-    "Set up U.S. mail forwarding and a U.S. phone number for 2-factor codes",
-    "Resign properly and confirm final pay and benefits dates"
+    "Keep a U.S. phone number for bank verification codes",
+    "Arrange U.S. mail handling and update the pension and SSA address"
   ]},
-  { phase: "First 30 days overseas", items: [
-    "Complete medical checks, ID cards and residence registration",
+  { phase: "First 30 days", items: [
+    "Register residence and get the local ID card",
     "Open a local bank account",
-    "Get a local phone plan",
     "Register with the U.S. embassy's STEP programme",
-    "Save local emergency numbers and the embassy number",
-    "Find your nearest hospital and clinic that takes your insurance"
+    "Find a doctor and the nearest hospital that takes your insurance",
+    "Save local emergency numbers"
   ]},
   { phase: "First 90 days", items: [
-    "Sign a long-term lease (if housing is not provided)",
+    "Sign a long-term lease",
     "Start language classes",
-    "Join a teacher or expat women's group",
-    "Set up your first U.S. tax plan with a cross-border preparer"
+    "Join a women's or expat group, church, choir or volunteer group",
+    "Meet a cross-border tax preparer about the first U.S. and local returns"
   ]},
   { phase: "Every year", items: [
-    "File U.S. taxes (April 15; automatic extension to June 15 if abroad)",
+    "File U.S. taxes (automatic extension to June 15 when living abroad)",
     "File FBAR if foreign accounts exceed $10,000 at any point",
     "Renew residence permit or visa before expiry",
-    "Renew teaching license (home state and local) and log professional development",
-    "Review contract renewal terms by the school's deadline",
-    "Review emergency fund and insurance"
+    "Return any 'proof of life' forms the pension system sends",
+    "Review health insurance and emergency fund"
   ]}
 ];
 
@@ -563,6 +585,12 @@ const SOURCES = {
   s56: { t: "Spain: non-EU teacher hiring and labour-market test", u: "https://spill.org/el/guides/spain-expat-guide", type: "Guide (lower confidence)" },
   s61: { t: "Crossroads Christian Academy Panama listing", u: "https://www.career.com/job/crossroads-christian-academy-panama/upper-elementary-teacher-relocation-to-panama-international-christian-school-2026-2027/j202603172304188491418", type: "Job listing" },
   s62: { t: "Al Ain primary teacher listing (AED 14,790)", u: "https://app.qureos.com/jobs/primary-teacher-al-ain-uae-august-2026-1772370968108", type: "Job listing" },
+  s70: { t: "Royal Thai MFA: Non-Immigrant O retirement visa requirements", u: "https://image.mfa.go.th/mfa/0/n3gTFT2TOE/Visa_Requirements/NON-O_for_Retirement_visa.pdf", type: "Official" },
+  s71: { t: "UAE retirement visa eligibility (Khaleej Times)", u: "https://www.khaleejtimes.com/life-and-living/visa-and-immigration-in-uae/retirement-visa-in-dubai-cost-eligibility-all-you-need-to-know", type: "News (updated July 2024)" },
+  s72: { t: "Retiring to Mexico: residency and tax (Nov 2026)", u: "https://brighttax.com/blog/retire-to-mexico/", type: "Tax firm guide" },
+  s73: { t: "Greece 7% foreign pensioner regime, deadline extended", u: "https://greekcitytimes.com/2026/09/26/greece-extends-special-tax-regime-deadline-for-foreign-pensioners/", type: "News" },
+  s74: { t: "AARP: Medicare if living outside the U.S.", u: "https://www.aarp.org/medicare/faq/medicare-if-living-outside-united-states/", type: "Non-profit guide" },
+  s75: { t: "International Living: Medicare overseas", u: "https://internationalliving.com/medicare-abroad-need-to-know", type: "Guide" },
   s135:{ t: "Non-B visa steps for teachers", u: "https://www.internationalteflacademy.com/blog/visas-teach-english-in-thailand", type: "TEFL provider" }
 };
 

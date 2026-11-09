@@ -3,12 +3,12 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Agnes Jamison Teaching Abroad Guide</title>
+<title>Agnes Jamison Retirement Abroad</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Agnes Jamison's researched guide to teaching and living in Greece, Italy, Thailand, the UAE, Spain, Portugal, Mexico and Panama.">
+<meta name="description" content="Agnes Jamison's guide to retiring, and teaching if she wishes, in Greece, Italy, Thailand, the UAE, Spain, Portugal, Mexico and Panama.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=Instrument+Sans:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Jost:wght@300;400;500;600&display=swap">
 <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
@@ -16,12 +16,13 @@
 
 <header class="topbar" id="top">
   <div class="topbar-inner">
-    <a class="brand" href="#overview"><span class="brand-name">Agnes Jamison</span><span class="brand-sub">Teaching Abroad Guide</span></a>
+    <a class="brand" href="#overview"><span class="monogram" aria-hidden="true">AJ</span><span class="brand-text"><span class="brand-name">Agnes Jamison</span><span class="brand-sub">Life Abroad</span></span></a>
     <button class="menu-btn" id="menuBtn" aria-expanded="false" aria-controls="siteNav">Menu</button>
     <nav class="site-nav" id="siteNav" aria-label="Sections">
       <a href="#overview">Overview</a>
       <a href="#rankings">Rankings</a>
-      <a href="#teaching" class="nav-strong">Teaching Abroad</a>
+      <a href="#retirement" class="nav-strong">Retirement income</a>
+      <a href="#teaching">Teaching</a>
       <a href="#pay">Pay &amp; contracts</a>
       <a href="#jobs">Find jobs</a>
       <a href="#cities">Cities</a>
@@ -46,11 +47,11 @@
 <section id="overview" class="hero">
   <div class="wrap hero-grid">
     <div class="hero-text">
-      <p class="eyebrow">A relocation and teaching plan across eight countries</p>
-      <h1>Where Agnes can teach, live and save next</h1>
-      <p class="lede">Greece, Italy, Thailand, the United Arab Emirates, Spain, Portugal, Mexico and Panama, compared for a licensed U.S. teacher: job routes, visas, budgets, neighbourhoods and a step-by-step move plan.</p>
+      <p class="eyebrow">Prepared for Agnes Jamison</p>
+      <h1>Where Agnes will <em>live beautifully</em> after the classroom</h1>
+      <p class="lede">A retirement plan across Greece, Italy, Thailand, the United Arab Emirates, Spain, Portugal, Mexico and Panama: where her pension goes furthest, which residence visas fit, how healthcare works, where she could still teach if she chooses, and a calm, step-by-step move.</p>
       <nav class="hero-links" aria-label="Jump to">
-        <a href="#teaching">Teaching abroad</a><a href="#budgets">Budget calculator</a><a href="#timeline">Move checklist</a><a href="#resources">Resources</a>
+        <a href="#retirement">Retirement income</a><a href="#budgets">Budget calculator</a><a href="#timeline">Move checklist</a><a href="#resources">Resources</a>
       </nav>
     </div>
     <aside class="assume" aria-labelledby="assumeTitle">
@@ -83,22 +84,78 @@
 <section id="rankings" class="sec">
   <div class="wrap">
     <p class="eyebrow">Section 1</p>
-    <h2 class="h-section">Personalised country rankings</h2>
-    <p class="prose">Each country gets a 1–5 score on eight criteria. Legal access and job availability count 1.5×, housing 0.75×, everything else 1×. Results differ sharply depending on whether Agnes moves <strong>with a teaching job</strong> or <strong>on independent income</strong> (savings, pension or remote work), so both are shown.</p>
+    <h2 class="h-section">How the eight countries compare</h2>
+    <p class="prose">Each country gets a 1–5 score on eight criteria. For a retirement move, qualifying for residence and healthcare-and-safety count most (1.5×), the option to keep teaching counts least (0.5×). A second view shows the ranking if Agnes wants a full-time teaching post instead; that depends heavily on her age and is shown for comparison.</p>
     <div class="seg" role="tablist" aria-label="Ranking track">
-      <button role="tab" id="trackJob" aria-selected="true" data-track="job">Moving with a teaching job</button>
-      <button role="tab" id="trackIndep" aria-selected="false" data-track="indep">Moving on independent income</button>
+      <button role="tab" aria-selected="true" data-track="retire">Retiring on pension income</button>
+      <button role="tab" aria-selected="false" data-track="job">Taking a full-time teaching post</button>
     </div>
     <div class="table-scroll"><table class="rank-table" id="rankTable"></table></div>
-    <p class="note">Scores are judgements built from the sourced facts in each country section, not official ratings. A UAE score of 2 for safety reflects the Level 3 U.S. advisory, not everyday street crime, which is low.</p>
+    <p class="note">Scores are judgements built from the sourced facts in each country section, not official ratings. A UAE score of 2 for safety reflects the Level 3 U.S. advisory, not everyday street crime, which is low. The cost-of-living and stretch scores assume the same income everywhere.</p>
+  </div>
+</section>
+
+<!-- ============ RETIREMENT INCOME ============ -->
+<section id="retirement" class="sec sec-feature">
+  <div class="wrap">
+    <p class="eyebrow">Section 2</p>
+    <h2 class="h-section">Retirement income, visas and Medicare</h2>
+    <p class="prose">Most retirement visas ask one question first: does her pension and Social Security reach the country's monthly minimum? The table compares each country's main retirement route with the placeholder income of <strong class="num" data-bind="baseIncome"></strong> a month. Replace it with her real figure in the calculator.</p>
+    <div class="table-scroll"><table class="data-table" id="visaTestTable"></table></div>
+
+    <h3 class="h-sub">What that income buys, country by country</h3>
+    <p class="prose small">Scenario only: the same placeholder income, an estimated effective tax rate, and the "comfortable" monthly budget for one person renting a 1-bedroom.</p>
+    <div class="table-scroll"><table class="data-table" id="retireTable"></table></div>
+
+    <div class="two-col">
+      <div class="prose">
+        <h3>Her teacher pension</h3>
+        <p>Most state teacher pensions keep paying wherever a retiree lives, but rules differ by system. Some pay only into a U.S. bank account; some send yearly "proof of life" forms; survivor options are fixed at retirement. Visa offices usually want an official award letter showing the monthly amount, sometimes apostilled.</p>
+        <p><strong>Social Security:</strong> the Social Security Fairness Act (signed January 5, 2025) repealed the Windfall Elimination Provision and Government Pension Offset, which used to reduce benefits for many teachers who also receive a state pension. <a class="src" href="https://www.rio.nd.gov/faq-social-security-fairness-act-and-repeal-wep-gpo" target="_blank" rel="noopener">source</a> U.S. benefits can generally be paid to residents of all eight countries.</p>
+        <h3>Questions for the pension system</h3>
+        <ul class="ticks">
+          <li>Can my pension be deposited to a foreign bank, or only a U.S. account?</li>
+          <li>Does retiree health coverage pay for care outside the U.S.?</li>
+          <li>What letter can you issue for a foreign visa, and can it be apostilled?</li>
+          <li>Will you withhold U.S. or state tax if I change my address abroad?</li>
+          <li>What proof-of-life or address paperwork will you send each year?</li>
+        </ul>
+      </div>
+      <div class="prose">
+        <h3>Medicare does not travel</h3>
+        <p>Medicare generally does not pay for care outside the U.S. A retiree living abroad usually chooses between paying Part B premiums for coverage she can use only on visits home, or delaying Part B and facing a permanent late-enrollment penalty if she later returns. <a class="src" href="https://www.aarp.org/medicare/faq/medicare-if-living-outside-united-states/" target="_blank" rel="noopener">AARP</a> <a class="src" href="https://internationalliving.com/medicare-abroad-need-to-know" target="_blank" rel="noopener">International Living</a></p>
+        <p>One teacher-specific point: anyone without premium-free Part A (fewer than 40 quarters of Medicare-taxed work) cannot enroll from abroad, but also faces no penalty for waiting until she returns. Some teachers hired before April 1986 in certain states fall into this group, so it is worth checking her record.</p>
+        <p><strong>Abroad, she will need</strong> either the country's public system (available to residents in Portugal, Spain, Italy and Greece, sometimes after a waiting period or with contributions), or private international insurance that meets the visa's rules. Premiums rise with age and some insurers cap new enrolment at 70 or 75; buy before moving.</p>
+        <h3>A word on age limits</h3>
+        <p>Thailand's retirement visa starts at 50 and the UAE's at 55. Most European retirement routes have no age minimum; they test income instead.</p>
+      </div>
+    </div>
   </div>
 </section>
 
 <!-- ============ TEACHING ABROAD ============ -->
-<section id="teaching" class="sec sec-feature">
+<section id="teaching" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 2 · The core of this guide</p>
-    <h2 class="h-section">Teaching abroad: Agnes's realistic options</h2>
+    <p class="eyebrow">Section 3 · If she wants to keep teaching</p>
+    <h2 class="h-section">Teaching in retirement</h2>
+    <div class="callout">
+      <strong>The main trade-off:</strong> the easiest retirement visas usually <em>forbid local work</em>. Spain's Non-Lucrative Visa, Italy's Elective Residence, Greece's FIP, Thailand's retirement visa and Panama's Pensionado do not allow her to take a paid teaching job. Portugal's D7 residence permit generally allows work, and Mexican permanent residents can generally work; confirm both before accepting pay. Volunteering can also count as work in some countries, so check before committing.
+    </div>
+    <div class="two-col" style="margin-top:0">
+      <div class="prose">
+        <h3>Gentle ways to stay in the classroom</h3>
+        <ul>
+          <li><strong>Substitute or part-time posts</strong> at international schools, where the school can sponsor a permit (best in Portugal and Mexico, where her residence may already allow work).</li>
+          <li><strong>Private tutoring</strong> of English or her subject, only where her status allows paid work.</li>
+          <li><strong>Online teaching for U.S. students</strong>, which sits uneasily with "no work" retirement visas; it suits Portugal's D8 or Spain's digital nomad route instead.</li>
+          <li><strong>Volunteering</strong> with literacy charities, church schools or refugee programmes, after checking local rules.</li>
+        </ul>
+      </div>
+      <div class="prose">
+        <h3>Age and full-time posts</h3>
+        <p>Many international schools prefer teachers under about 60–65, and some countries set work-permit age limits. No official teacher age cap was verified for this guide, so ask each school directly. A full-time post brings housing, insurance and a work visa, but trades away the freedom she is retiring for. The country details below still cover every teaching route in case she wants one.</p>
+      </div>
+    </div>
     <div class="two-col">
       <div class="prose">
         <h3>What a U.S. license does, and what it does not do</h3>
@@ -120,7 +177,7 @@
     </div>
 
     <div class="callout">
-      <strong>Should Agnes secure a job before moving?</strong> Yes, in every country on this list. Each requires the employer to start or support the work permit before she starts work. Moving on a tourist entry and job-hunting is not a legal way to start teaching, and repeated tourist entries are not a relocation strategy.
+      <strong>If she does take a job, secure it before moving.</strong> In every country on this list, the employer must start or support the work permit before she starts work. Moving on a tourist entry and job-hunting is not a legal way to start teaching, and repeated tourist entries are not a relocation strategy.
     </div>
 
     <div class="role-filter">
@@ -134,12 +191,12 @@
 <!-- ============ PAY & CONTRACTS ============ -->
 <section id="pay" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 3</p>
-    <h2 class="h-section">Teacher pay, benefits and contract quality</h2>
+    <p class="eyebrow">Section 4 · If she teaches</p>
+    <h2 class="h-section">Teacher pay, benefits and contracts</h2>
     <p class="prose">Figures are <strong>advertised</strong> ranges from job listings, recruiters and salary guides. None is verified compensation from a signed contract. U.S. dollar amounts use the rates on <span data-bind="fxDate"></span>.</p>
     <div class="table-scroll"><table class="data-table" id="payTable"></table></div>
 
-    <h3 class="h-sub">Representative offers: what might be left each month</h3>
+    <h3 class="h-sub">If she took a full-time post: what might be left each month</h3>
     <p class="prose small">Scenario only. Take-home uses a flat estimated rate for local income tax and social contributions. Expenses use the "comfortable" budget for that country, minus rent and insurance where the offer provides them, so nothing is counted twice.</p>
     <div class="table-scroll"><table class="data-table" id="scenarioTable"></table></div>
 
@@ -171,34 +228,13 @@
       </div>
     </div>
 
-    <div class="card retire">
-      <h3>Retirement, pension, Social Security and health benefits</h3>
-      <div class="two-col">
-        <div class="prose">
-          <p><strong>State teacher pension:</strong> leaving a U.S. district usually stops service credit. Overseas teaching does not normally count toward a state pension unless the plan allows purchase of service. If Agnes is not yet vested, leaving could cost employer contributions.</p>
-          <p><strong>Social Security:</strong> the Social Security Fairness Act (signed January 5, 2025) repealed the Windfall Elimination Provision and Government Pension Offset, which used to cut benefits for many teachers with a non-covered state pension. <a class="src" href="https://www.rio.nd.gov/faq-social-security-fairness-act-and-repeal-wep-gpo" target="_blank" rel="noopener">source</a></p>
-          <p><strong>Totalization:</strong> the U.S. has Social Security agreements in force with Greece, Italy, Portugal and Spain, which can prevent double contributions and help qualify for benefits. There is none in force with Mexico (signed 2004, never ratified), Thailand, the UAE or Panama. <a class="src" href="https://secure.ssa.gov/poms.nsf/lnx/0201701005" target="_blank" rel="noopener">SSA</a> <a class="src" href="https://expat-tax-e9l.pages.dev/blog/totalization-agreements-explained/" target="_blank" rel="noopener">guide</a></p>
-        </div>
-        <div class="prose">
-          <p><strong>Questions for her pension administrator and district:</strong></p>
-          <ul class="ticks">
-            <li>Am I vested? What happens to my account if I resign now?</li>
-            <li>Can I take an unpaid leave of absence and keep my position or seniority?</li>
-            <li>Can I purchase service credit for years taught abroad later?</li>
-            <li>If I leave money in the plan, does it earn interest? Can I roll it over?</li>
-            <li>When does my district health insurance end? Is COBRA available and at what cost?</li>
-            <li>Does my state require continuing education to keep my license active while abroad?</li>
-          </ul>
-        </div>
-      </div>
-    </div>
   </div>
 </section>
 
 <!-- ============ JOBS ============ -->
 <section id="jobs" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 4</p>
+    <p class="eyebrow">Section 5 · If she teaches</p>
     <h2 class="h-section">Where and how to find teaching jobs</h2>
     <div class="callout warn"><strong>Vacancy status, checked November 8, 2026:</strong> no currently open vacancy was verified for any school below. Listings marked "past listing" were open earlier in 2026 for August 2026 starts. Treat every school here as one to research. The main hiring window for August 2027 is open now through March 2027.</div>
 
@@ -241,7 +277,7 @@
 <!-- ============ CITIES ============ -->
 <section id="cities" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 5</p>
+    <p class="eyebrow">Section 6</p>
     <h2 class="h-section">Cities and neighbourhoods</h2>
     <p class="prose">Two or three cities per country, including cheaper alternatives. International schools often sit in suburbs, so neighbourhood picks follow the schools.</p>
     <div id="cityCards" class="country-stack"></div>
@@ -251,7 +287,7 @@
 <!-- ============ BUDGETS ============ -->
 <section id="budgets" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 6</p>
+    <p class="eyebrow">Section 7</p>
     <h2 class="h-section">Living costs and relocation budgets</h2>
     <p class="prose">Monthly budgets for one adult renting a 1-bedroom. "Comfortable" is built line by line; "modest" trims flexible spending and assumes a cheaper area; "higher comfort" adds a nicer flat, more dining and travel. All are estimates in U.S. dollars.</p>
     <div class="table-scroll"><table class="data-table" id="tierTable"></table></div>
@@ -263,47 +299,49 @@
           <select id="calcCountry"></select>
         </label>
         <div class="field-row">
-          <label class="field">Gross monthly salary (USD)<input type="number" id="cSalary" min="0" step="50"></label>
-          <label class="field">Tax and contributions (%)<input type="number" id="cTax" min="0" max="60" step="1"></label>
+          <label class="field">Teacher pension (USD/month)<input type="number" id="cSalary" min="0" step="50"></label>
+          <label class="field">Social Security (USD/month)<input type="number" id="cSS" min="0" step="50" value="0"></label>
         </div>
         <div class="field-row">
-          <label class="field">Other monthly income (USD)<input type="number" id="cOther" min="0" step="50" value="0"></label>
+          <label class="field">Part-time teaching or other income<input type="number" id="cOther" min="0" step="50" value="0"></label>
+          <label class="field">Estimated income tax (%)<input type="number" id="cTax" min="0" max="60" step="1"></label>
+        </div>
+        <div class="field-row">
           <label class="field">Rent (USD)<input type="number" id="cRent" min="0" step="25"></label>
-        </div>
-        <div class="field-row">
           <label class="field">Living costs excl. rent and insurance (USD)<input type="number" id="cLiving" min="0" step="25"></label>
           <label class="field">Health insurance (USD)<input type="number" id="cIns" min="0" step="10"></label>
         </div>
         <div class="toggles">
-          <label class="check"><input type="checkbox" id="cHousing"> Employer provides housing</label>
-          <label class="check"><input type="checkbox" id="cInsured"> Employer provides insurance</label>
+          <label class="check"><input type="checkbox" id="cHousing"> Housing provided (with a teaching post)</label>
+          <label class="check"><input type="checkbox" id="cInsured"> Insurance provided (with a teaching post)</label>
         </div>
-        <label class="field">Emergency reserve (months of expenses)<input type="range" id="cReserve" min="0" max="12" step="1" value="3"><span class="range-val" id="cReserveVal">3 months</span></label>
+        <label class="field">Emergency reserve (months of expenses)<input type="range" id="cReserve" min="0" max="12" step="1" value="6"><span class="range-val" id="cReserveVal">6 months</span></label>
         <p class="small muted" id="calcNote"></p>
       </div>
       <div class="calc-out" aria-live="polite">
-        <div class="kpi"><span class="kpi-label">Take-home income</span><span class="kpi-val" id="oNet"></span></div>
+        <div class="visa-check" id="visaCheck"></div>
+        <div class="kpi"><span class="kpi-label">Income after tax</span><span class="kpi-val" id="oNet"></span></div>
         <div class="kpi"><span class="kpi-label">Monthly expenses</span><span class="kpi-val" id="oExp"></span></div>
         <div class="kpi kpi-main"><span class="kpi-label">Left each month</span><span class="kpi-val" id="oSave"></span></div>
-        <div class="kpi"><span class="kpi-label">Per school year (12 mo)</span><span class="kpi-val" id="oYear"></span></div>
-        <h4 class="h-small">Money needed before the first paycheck</h4>
+        <div class="kpi"><span class="kpi-label">Per year</span><span class="kpi-val" id="oYear"></span></div>
+        <h4 class="h-small">Money to have in hand before moving</h4>
         <table class="mini-table" id="upfrontTable"></table>
       </div>
     </div>
-    <p class="note">Upfront assumptions: one-way flight; 4 weeks of temporary housing unless housing is provided; a deposit of two months' rent; furnishings; credential costs (apostilles, background check, translations or attestation); visa fees; shipping two suitcases' worth of extras; legal help where normal; 6 weeks of living costs until the first full paycheck; plus the emergency reserve and a flight home. Edit any number above; preset values reload when you change country.</p>
+    <p class="note">Upfront assumptions: one-way flight; 4 weeks of temporary housing; a deposit of two months' rent; furnishings; documents (background check, apostilles, translations); visa fees; shipping; legal help where normal; 6 weeks of living costs while banking and pension transfers settle; plus the emergency reserve and a flight home. Edit any number; preset values reload when you change country.</p>
   </div>
 </section>
 
 <!-- ============ VISAS ============ -->
 <section id="visas" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 7</p>
+    <p class="eyebrow">Section 8</p>
     <h2 class="h-section">Visas, work permits and legal residence</h2>
     <div class="callout"><strong>Tourist entry is not permission to live or work.</strong> U.S. citizens can visit all eight countries visa-free or with an easy visa for short stays, but working on that entry is illegal everywhere here. Meeting a visa's requirements makes Agnes <em>eligible to apply</em>; approval is never guaranteed and consulates set their own document rules.</div>
     <div class="seg" role="tablist" aria-label="Visa track">
       <button role="tab" aria-selected="true" data-vtrack="all">All routes</button>
+      <button role="tab" aria-selected="false" data-vtrack="retire">Retirement and income</button>
       <button role="tab" aria-selected="false" data-vtrack="job">Teaching job</button>
-      <button role="tab" aria-selected="false" data-vtrack="indep">Independent income</button>
     </div>
     <div id="visaCards" class="country-stack"></div>
     <p class="prose"><strong>Is an employer permit tied to one school?</strong> In the UAE, Thailand and Panama, yes: the permit names your employer, and changing schools means the new school applies and the old permit is cancelled. In Mexico, changing employer requires updating INM. In Spain and Italy, the first permit is tied to the employer; later renewals become more flexible.</p>
@@ -313,7 +351,7 @@
 <!-- ============ RESIDENCY ============ -->
 <section id="residency" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 8</p>
+    <p class="eyebrow">Section 9</p>
     <h2 class="h-section">Permanent residence and citizenship</h2>
     <p class="prose">Temporary residence is what a work or income visa gives. Permanent residence removes renewal tied to a job. Citizenship gives a passport. Being eligible to apply is not the same as approval, and processing can add years.</p>
     <div class="table-scroll"><table class="data-table" id="resTable"></table></div>
@@ -324,7 +362,7 @@
 <!-- ============ HOUSING ============ -->
 <section id="housing" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 9</p>
+    <p class="eyebrow">Section 10</p>
     <h2 class="h-section">Renting or buying a home</h2>
     <div class="two-col">
       <div class="prose">
@@ -354,7 +392,7 @@
 <!-- ============ HEALTH, SAFETY, LIFE ============ -->
 <section id="life" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 10</p>
+    <p class="eyebrow">Section 11</p>
     <h2 class="h-section">Healthcare, safety and everyday life</h2>
     <div class="table-scroll"><table class="data-table" id="safetyTable"></table></div>
     <div class="two-col">
@@ -391,7 +429,7 @@
 <!-- ============ TAXES ============ -->
 <section id="taxes" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 11</p>
+    <p class="eyebrow">Section 12</p>
     <h2 class="h-section">Taxes, banking and financial preparation</h2>
     <div class="two-col">
       <div class="prose">
@@ -402,6 +440,8 @@
           <li><strong>Foreign Tax Credit:</strong> often better in higher-tax countries such as Spain, Portugal or Italy, where local tax already exceeds U.S. tax.</li>
         </ul>
         <p><strong>Reporting:</strong> FBAR (FinCEN 114) if foreign accounts together exceed $10,000 at any point in the year; Form 8938 above higher thresholds. Her state may still tax her unless she properly ends state residency.</p>
+        <h3>How a teacher pension may be taxed</h3>
+        <p>The Foreign Earned Income Exclusion does not apply to pensions or Social Security; it covers only wages from work abroad. Pension taxation depends on the U.S. treaty with each country and on whether the pension counts as government service. Under the U.S.–Mexico treaty, the U.S. generally keeps sole taxing rights over Social Security. <a class="src" href="https://brighttax.com/blog/retire-to-mexico/" target="_blank" rel="noopener">source</a> Greece offers foreign pensioners a 7% flat tax on foreign income if they were not Greek tax residents in five of the previous six years; the 2026 application deadline was extended to October 31. <a class="src" href="https://greekcitytimes.com/2026/09/26/greece-extends-special-tax-regime-deadline-for-foreign-pensioners/" target="_blank" rel="noopener">source</a> Panama taxes only Panamanian-source income. Thailand changed how it taxes foreign income brought into the country in 2024; confirm the current rule before moving.</p>
         <h3>Local tax residency</h3>
         <p>Spending 183+ days a year in a country usually makes her tax resident there. The UAE has no personal income tax on salaries. Thailand taxes progressively (5–35%). The European countries tax salaries and take social contributions.</p>
       </div>
@@ -410,7 +450,8 @@
         <p>Teaching online for a U.S. company while living abroad needs: a visa that allows remote work (Spain DNV, Portugal D8, Greece DNV, Thailand DTV); the platform's own rules (some do not allow teachers outside the U.S.); a plan for payroll (U.S. W-2 or 1099 income, possible self-employment tax); and time zones (U.S. evening classes fall at 1–4 a.m. in Thailand).</p>
         <h3>Questions for a cross-border tax professional</h3>
         <ul class="ticks">
-          <li>Will FEIE or the foreign tax credit work better for my country and salary?</li>
+          <li>Who taxes my teacher pension and Social Security under this country's treaty?</li>
+          <li>If I take part-time teaching work, will FEIE or the foreign tax credit work better?</li>
           <li>How do I end state tax residency in my current state?</li>
           <li>How is my U.S. retirement account (403(b), 457, IRA) taxed locally?</li>
           <li>Will a lump-sum pension withdrawal be taxed twice?</li>
@@ -425,31 +466,30 @@
 <!-- ============ TIMELINE ============ -->
 <section id="timeline" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Section 12</p>
-    <h2 class="h-section">Scouting trip and relocation timeline</h2>
-    <h3 class="h-sub">13-day scouting trip: Mexico City and Bangkok</h3>
-    <p class="prose small">These two leading destinations sit on opposite sides of the world. If time is short, do Mexico City as a long weekend from the U.S. and spend the main trip in Bangkok. Ask schools in advance whether an in-person visit or interview is possible; many interview online only.</p>
+    <p class="eyebrow">Section 13</p>
+    <h2 class="h-section">Scouting trip and move timeline</h2>
+    <h3 class="h-sub">A 12-day scouting trip: Portugal and Spain</h3>
+    <p class="prose small">Her two leading European choices sit a short flight apart. Go in late autumn or early spring to see everyday life, not peak season. Plan two real-world tests each day: a grocery shop, a bus ride, a pharmacy visit, a coffee with someone who already lives there.</p>
     <div class="trip" id="trip">
       <div class="trip-leg card">
-        <h4>Mexico City · Days 1–5</h4>
+        <h4>Porto and the Lisbon coast · Days 1–7</h4>
         <ol>
-          <li><strong>Day 1:</strong> Arrive; stay in Del Valle or Narvarte. Evening walk, test the Metrobús.</li>
-          <li><strong>Day 2:</strong> Morning commute test to the west side at school-run time; visit ASF area if a visit is arranged. Afternoon: two flat viewings.</li>
-          <li><strong>Day 3:</strong> Coffee with two teachers already working there (find them via Search Associates forums or school contacts). Visit a private hospital and ask about insurance billing.</li>
-          <li><strong>Day 4:</strong> Grocery shop at a supermarket and a market; price your usual basket. Visit San Pedro de los Pinos and Nápoles.</li>
-          <li><strong>Day 5:</strong> Spare day for a follow-up interview or viewing; fly out.</li>
+          <li><strong>Days 1–2:</strong> Arrive in Porto; stay in Boavista or Matosinhos. Walk the seafront, try the metro, shop at a local supermarket and market.</li>
+          <li><strong>Day 3:</strong> View three flats with a rental agent; visit a private hospital and ask about international insurance billing.</li>
+          <li><strong>Day 4:</strong> Meet expat women through InterNations or a church or book club; ask about AIMA appointments and doctors.</li>
+          <li><strong>Day 5:</strong> Train to Lisbon; stay in Cascais or Oeiras.</li>
+          <li><strong>Day 6:</strong> Compare the coast with the city: rents, hills, noise, transport into Lisbon.</li>
+          <li><strong>Day 7:</strong> Visit an international school if she may want to substitute or tutor; fly to Valencia.</li>
         </ol>
       </div>
       <div class="trip-leg card">
-        <h4>Bangkok · Days 6–13</h4>
+        <h4>Valencia · Days 8–12</h4>
         <ol>
-          <li><strong>Day 6–7:</strong> Travel and arrive; stay in Ari near the BTS.</li>
-          <li><strong>Day 8:</strong> Morning BTS commute to Sukhumvit schools; afternoon in Phrom Phong.</li>
-          <li><strong>Day 9:</strong> School visits or interviews; evening meet-up with teachers.</li>
-          <li><strong>Day 10:</strong> Day trip to Nichada Thani (ISB area) and Bang Na to judge suburban life.</li>
-          <li><strong>Day 11:</strong> Visit a private hospital; get a condo agent to show 4 units.</li>
-          <li><strong>Day 12:</strong> Grocery and market prices; check air-quality app readings.</li>
-          <li><strong>Day 13:</strong> Rest, notes, fly home.</li>
+          <li><strong>Day 8:</strong> Settle in Ruzafa or Campanar; evening walk in the Turia gardens.</li>
+          <li><strong>Day 9:</strong> View flats in Campanar, Benimaclet and the beach district of Malvarrosa.</li>
+          <li><strong>Day 10:</strong> Visit a hospital and an English-speaking doctor; price a month of groceries.</li>
+          <li><strong>Day 11:</strong> Day by the sea and a Spanish trial lesson; meet a local expat women's group.</li>
+          <li><strong>Day 12:</strong> Write notes while fresh: where she felt at home, what surprised her. Fly home.</li>
         </ol>
       </div>
     </div>
@@ -462,9 +502,9 @@
     <div class="card planb">
       <h3>If something goes wrong</h3>
       <div class="planb-grid">
-        <div><h4>Visa delayed</h4><p>Ask the school for a written later start date. Keep your U.S. job or sub work until the visa is issued; do not travel to "wait it out" on a tourist entry if you need to apply from home.</p></div>
-        <div><h4>Offer withdrawn</h4><p>Get it in writing and ask about reimbursed costs. Return to Search Associates and TES; late hiring continues through summer. Keep 2 backup schools warm.</p></div>
-        <div><h4>Job loss abroad</h4><p>Learn the grace period for your visa on day one. Keep the emergency reserve plus a flight home untouched.</p></div>
+        <div><h4>Visa delayed</h4><p>Keep the U.S. home or lease until the visa is in hand. Do not move on a tourist entry hoping to convert later; most retirement visas must be issued before arrival.</p></div>
+        <div><h4>Visa refused</h4><p>Ask for the reason in writing. Most refusals are paperwork: income proof, insurance gaps, translations. Fix and reapply, or switch to the second-choice country.</p></div>
+        <div><h4>Income changes</h4><p>A currency swing can push income below a visa minimum at renewal. Keep a margin of at least 20% above the threshold and keep the emergency reserve untouched.</p></div>
         <div><h4>Medical problem</h4><p>Know which hospital takes your insurance. Keep U.S. coverage options in mind (Medicare later, marketplace plans on return).</p></div>
         <div><h4>Returning home</h4><p>Keep your state license current, keep U.S. bank accounts and credit active, and save school reference letters each year.</p></div>
       </div>
@@ -476,26 +516,26 @@
 <section id="recommendation" class="sec sec-feature">
   <div class="wrap">
     <p class="eyebrow">Final recommendation</p>
-    <h2 class="h-section">Agnes's top three, and what to do next</h2>
+    <h2 class="h-section">Agnes's top three, and what comes next</h2>
     <div id="finalPicks" class="final-grid"></div>
     <div class="two-col">
       <div class="prose">
-        <h3>Most realistic teaching roles</h3>
+        <h3>Teaching, if she wants it</h3>
         <ol>
-          <li>Homeroom or subject teacher at an <strong>accredited American or IB international school</strong> (Bangkok, Abu Dhabi, Mexico City/Monterrey).</li>
-          <li>Teacher at an <strong>ADEK charter or private school</strong> in Abu Dhabi or Al Ain.</li>
-          <li>For Spain, the <strong>Auxiliares de Conversación</strong> programme as a low-paid first year, if she has savings and is under 45.</li>
+          <li><strong>Portugal on a D7:</strong> the residence permit generally allows work, so substitute teaching, tutoring or a part-time international-school post is possible once she has it. Confirm before accepting pay.</li>
+          <li><strong>Mexico as a permanent resident:</strong> permanent residents can generally work, which opens tutoring and part-time posts at American schools.</li>
+          <li><strong>Spain:</strong> the Non-Lucrative Visa forbids paid work; volunteering is the realistic path, after checking local rules.</li>
         </ol>
-        <p>If she has a pension or steady independent income, Portugal (D7) and Spain (Non-Lucrative) become the strongest lifestyle choices, but she could not teach locally on those visas.</p>
+        <p>Panama's Pensionado has the lowest income test of all ($1,000 a month) and uses U.S. dollars, but carries no right to work.</p>
       </div>
       <div class="prose">
         <h3>Next five actions</h3>
         <ol class="steps">
-          <li>Answer the questionnaire (subjects, grades, years, age, savings) so this guide can be re-ranked.</li>
-          <li>Order the FBI background check and apostilled copies of degree and license this month.</li>
-          <li>Join Search Associates, Teach Away and TES; upload a 2-page résumé and portfolio by early December.</li>
-          <li>Apply to about 12 schools across Bangkok, Abu Dhabi and Mexico City/Monterrey from December to February; join one virtual recruiting fair.</li>
-          <li>Call her pension administrator and book one session with a cross-border tax preparer before accepting an offer.</li>
+          <li>Tell this guide her expected pension, Social Security, retirement date and age, so the rankings and visa tests use real numbers.</li>
+          <li>Ask her pension system the five questions in Section 2, especially about foreign deposits and retiree health cover.</li>
+          <li>Decide a Medicare Part B approach before she turns 65, with help from a Medicare counsellor (SHIP).</li>
+          <li>Book the 12-day scouting trip to Porto, the Lisbon coast and Valencia.</li>
+          <li>Book one session with a cross-border tax adviser on how her pension and Social Security would be taxed.</li>
         </ol>
       </div>
     </div>
@@ -503,9 +543,9 @@
 </section>
 
 <!-- ============ RESOURCES ============ -->
-<section id="resources" class="sec sec-feature">
+<section id="resources" class="sec">
   <div class="wrap">
-    <p class="eyebrow">Keep using</p>
+    <p class="eyebrow">Keep close</p>
     <h2 class="h-section">Resources for Agnes</h2>
     <p class="prose">Sites to keep using while she researches, applies and settles in. Commercial services are listed as examples, not endorsements; compare before paying for anything.</p>
     <div id="resourceGroups" class="res-groups"></div>
@@ -529,7 +569,8 @@
 
 <footer class="footer">
   <div class="wrap">
-    <p>Prepared for Agnes Jamison. This guide is general information, not legal, tax or immigration advice. Confirm every requirement with the official authority or a licensed professional before acting.</p>
+    <p class="footer-name">Prepared for Agnes Jamison</p>
+    <p>This guide is general information, not legal, tax or immigration advice. Confirm every requirement with the official authority or a licensed professional before acting.</p>
     <p class="small">Last updated November 2026. Contains no personal identity, financial account or health information. Budgets are scenarios.</p>
   </div>
 </footer>
