@@ -180,7 +180,7 @@
           <div><h4>Age or nationality limits</h4><p>${t.restrictions}</p></div>
           <div><h4>U.S. advisory</h4><p>${c.advisory.text} ${src(c.advisory.src)}</p></div>
         </div>
-        <div class="table-scroll"><table class="routes"><thead><tr><th>Route</th><th>Requirements</th><th>Advertised pay</th><th>Fit for Agnes</th></tr></thead>
+        <div class="table-scroll"><table class="routes"><thead><tr><th>Route</th><th>Requirements</th><th>Advertised pay</th><th>Fit for me</th></tr></thead>
           <tbody>${t.routes.map(r => `<tr data-role="${r.role}"><td><strong>${r.label}</strong></td><td>${r.req}</td><td>${r.pay} ${src(r.src)}</td><td><span class="pill ${verdictClass(r.verdict)}">${r.verdict}</span></td></tr>`).join("")}</tbody></table></div>
         <p class="empty-note" hidden>No route of the selected type is realistic in ${c.short}.</p>
       </div></details>`;
@@ -341,7 +341,7 @@
 
   /* ---------- final picks */
   const FINAL = [
-    { id: "prt", city: "Porto, or Cascais on the Lisbon coast", role: "Optional: substitute teaching or tutoring once her D7 permit allows" },
+    { id: "prt", city: "Porto, or Cascais on the Lisbon coast", role: "Optional: substitute teaching or tutoring once my D7 permit allows" },
     { id: "esp", city: "Valencia", role: "Volunteering; paid work not allowed on the Non-Lucrative Visa" },
     { id: "mex", city: "Mérida, or Mexico City", role: "Optional: tutoring or part-time posts as a permanent resident" }
   ];

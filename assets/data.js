@@ -12,13 +12,13 @@ const RESEARCH_DATE = "November 8, 2026";
 const FX_DATE = "November 6, 2026 (Banque de France daily reference rates; THB and MXN cross-calculated through EUR)";
 const FX = { USD: 1, EUR: 0.8957, THB: 33.55, AED: 3.6725, MXN: 18.70, PAB: 1 };
 
-/* ---------- Profile assumptions (she has not answered the questionnaire yet) */
+/* ---------- Profile assumptions (written in Agnes's voice; replace with her real details) */
 const ASSUMPTIONS = [
-  { k: "Timing", v: "The move happens after Agnes retires from U.S. teaching. Her retirement date is not yet known." },
-  { k: "Income", v: "A state teacher pension, possibly Social Security, plus savings. The examples use $4,000 a month in total, which is a placeholder, not her figure." },
+  { k: "Timing", v: "I move after retiring from U.S. teaching. My retirement date is still to be set." },
+  { k: "Income", v: "A state teacher pension, possibly Social Security, plus savings. The examples use $4,000 a month in total, which is a placeholder, not my real figure." },
   { k: "Citizenship", v: "U.S. only; no EU passport or ancestry claim." },
   { k: "Age", v: "Not provided. Several retirement visas set minimum ages (Thailand 50, UAE 55), so this matters." },
-  { k: "Teaching", v: "Optional. She may want part-time teaching, tutoring or volunteering, which many retirement visas do not allow." },
+  { k: "Teaching", v: "Optional. I may want part-time teaching, tutoring or volunteering, which many retirement visas do not allow." },
   { k: "Household", v: "Moving alone, no pets or dependents." },
   { k: "Housing", v: "Rents first; buying is covered for later." },
   { k: "Not yet answered", v: "Health, medication, race and culture questions. Nothing is assumed or published." }
@@ -197,7 +197,7 @@ const COUNTRIES = [
 },
 {
   id: "esp", name: "Spain", short: "Spain", code: "ES", currency: "EUR",
-  tagline: "Best everyday lifestyle and long-term path, but non-EU teacher hiring is slow and pay is low. Strongest if Agnes has independent income.",
+  tagline: "Best everyday lifestyle and long-term path, but non-EU teacher hiring is slow and pay is low. Strongest on retirement income.",
   advisory: { level: 2, text: "Level 2, Exercise Increased Caution (terrorism), as listed March 2026.", src: ["s52"] },
   scores: {
     retire: { legal: 3, jobs: 1, income: 3, savings: 3, safety: 5, life: 5, housing: 3, longterm: 4 },
@@ -487,7 +487,7 @@ const CHECKLIST = [
     "Request pension and Social Security award letters for the visa file; apostille as required",
     "Buy international health insurance that meets the visa's rules",
     "Book a consulate appointment (Spain, Italy and Portugal fill up months ahead)",
-    "If she wants to keep teaching, check which visa allows it before applying"
+    "If I want to keep teaching, check which visa allows it before applying"
   ]},
   { phase: "Final 30 days", items: [
     "Collect the visa and check every detail",
@@ -627,7 +627,7 @@ const RESOURCES = [
   ]},
   { group: "U.S. government", items: [
     { n: "Travel advisories (State Department)", u: "https://travel.state.gov/en/international-travel/travel-advisories.html", d: "Check the current level for each country before every decision." },
-    { n: "STEP enrolment", u: "https://step.state.gov", d: "Register with the U.S. embassy so it can reach her in an emergency." },
+    { n: "STEP enrolment", u: "https://step.state.gov", d: "Register with the U.S. embassy so it can reach me in an emergency." },
     { n: "U.S. embassies", u: "https://www.usembassy.gov", d: "Embassy and consulate contacts for every country on this list." },
     { n: "FBI background check (eDO)", u: "https://www.edo.cjis.gov", d: "Order the Identity History Summary needed for most work visas." },
     { n: "IRS: U.S. citizens abroad", u: "https://www.irs.gov/individuals/international-taxpayers", d: "Filing rules, Foreign Earned Income Exclusion and Foreign Tax Credit." },
@@ -651,7 +651,7 @@ const RESOURCES = [
     { n: "italki", u: "https://www.italki.com", d: "One-to-one online tutors in Spanish, Portuguese, Italian, Greek, Thai and Arabic." }
   ]},
   { group: "Communities", items: [
-    { n: "Travel Noire", u: "https://travelnoire.com", d: "Travel and expat stories from Black travellers; useful if Agnes opts in to that research." },
+    { n: "Travel Noire", u: "https://travelnoire.com", d: "Travel and expat stories from Black travellers; useful if I want that perspective." },
     { n: "Wanderful", u: "https://www.sheswanderful.com", d: "Community and city chapters for women who travel." },
     { n: "Dave's ESL Cafe", u: "https://www.eslcafe.com", d: "Long-running English-teaching job board and country forums." }
   ]}
